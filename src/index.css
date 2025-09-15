@@ -1,6 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Basic CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  background-color: #f8f9fa;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
 
 /* Mobile-only CSS guard */
 @media (orientation: landscape) and (min-width: 768px) {
@@ -21,17 +38,4 @@
     padding: 20px;
     font-size: 18px;
   }
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
-}
-
-#root {
-  min-height: 100vh;
-  width: 100%;
 }

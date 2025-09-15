@@ -7,7 +7,7 @@ import Maps from './pages/Maps'
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/profile" element={<Profile />} />
