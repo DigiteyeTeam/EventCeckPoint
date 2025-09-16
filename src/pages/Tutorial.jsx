@@ -27,7 +27,7 @@ function Tutorial() {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1)
     } else {
-      navigate('/scan')
+      navigate('/main')
     }
   }
 
@@ -42,7 +42,12 @@ function Tutorial() {
   const currentStepData = steps[currentStep]
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+    <div style={{ 
+      minHeight: '100vh', 
+      backgroundColor: '#f8f9fa',
+      overflowY: 'auto',
+      paddingBottom: '100px'
+    }}>
       {/* Header */}
       <div style={{ 
         backgroundColor: 'white',
@@ -52,8 +57,10 @@ function Tutorial() {
         <h1 style={{ 
           color: '#dc2626', 
           fontSize: '18px', 
-          fontWeight: 'bold',
-          margin: '0'
+          fontWeight: '700',
+          fontFamily: "'Poppins', sans-serif",
+          margin: '0',
+          letterSpacing: '0.5px'
         }}>
           {currentStepData.title}
         </h1>
@@ -72,8 +79,9 @@ function Tutorial() {
           style={{
             maxWidth: '100%',
             height: 'auto',
-            maxHeight: '60vh',
-            objectFit: 'contain'
+            maxHeight: '50vh',
+            objectFit: 'contain',
+            width: '100%'
           }}
         />
       </div>
