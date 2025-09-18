@@ -201,7 +201,7 @@ function StoreDetail() {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      background: 'linear-gradient(to bottom, #1a0d2e, #6b1a4f, #8b0e1f)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -299,13 +299,13 @@ function StoreDetail() {
         </div>
 
         {/* Store Info */}
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '16px' }}>
           {/* Store Logo and Name */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            marginBottom: '20px'
+            marginBottom: '16px'
           }}>
             <ImageWithLoading
               src={store.logo}
@@ -326,7 +326,7 @@ function StoreDetail() {
               showSkeleton={false}
             />
             <h1 style={{
-              fontSize: '20px',
+              fontSize: '18px',
               fontWeight: 'bold',
               color: '#1f2937',
               margin: '0',
@@ -338,7 +338,7 @@ function StoreDetail() {
           </div>
 
           {/* Location */}
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ marginBottom: '12px' }}>
             <div style={{
               display: 'flex',
               alignItems: 'flex-start',
@@ -391,60 +391,103 @@ function StoreDetail() {
             </div>
           </div>
 
-          {/* Operating Hours */}
-          <div style={{ marginBottom: '16px' }}>
+          {/* Operating Hours & Phone */}
+          <div style={{ marginBottom: '12px' }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '16px'
             }}>
-              <Clock size={16} style={{ color: '#dc2626', flexShrink: 0 }} />
-              <div>
-                <p style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#374151',
-                  margin: '0 0 4px 0'
-                }}>
-                  เวลาทำการ
-                </p>
-                <p style={{
-                  fontSize: '13px',
-                  color: '#6b7280',
-                  margin: '0'
-                }}>
-                  {store.hours}
-                </p>
+              {/* Operating Hours */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                flex: 1
+              }}>
+                <Clock size={14} style={{ color: '#dc2626', flexShrink: 0 }} />
+                <div>
+                  <p style={{
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    margin: '0 0 2px 0'
+                  }}>
+                    เวลาทำการ
+                  </p>
+                  <p style={{
+                    fontSize: '11px',
+                    color: '#6b7280',
+                    margin: '0'
+                  }}>
+                    {store.hours}
+                  </p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                flex: 1
+              }}>
+                <Phone size={14} style={{ color: '#dc2626', flexShrink: 0 }} />
+                <div>
+                  <p style={{
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    margin: '0 0 2px 0'
+                  }}>
+                    โทรศัพท์
+                  </p>
+                  <p style={{
+                    fontSize: '11px',
+                    color: '#6b7280',
+                    margin: '0'
+                  }}>
+                    {store.phone}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Phone */}
-          <div style={{ marginBottom: '24px' }}>
+          {/* QR Code Instructions */}
+          <div style={{ 
+            marginBottom: '16px',
+            padding: '12px',
+            backgroundColor: '#fef3c7',
+            borderRadius: '8px',
+            border: '1px solid #f59e0b',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
             <div style={{
+              width: '16px',
+              height: '16px',
+              backgroundColor: '#f59e0b',
+              borderRadius: '3px',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: '10px',
+              fontWeight: 'bold',
+              flexShrink: 0
             }}>
-              <Phone size={16} style={{ color: '#dc2626', flexShrink: 0 }} />
-              <div>
-                <p style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#374151',
-                  margin: '0 0 4px 0'
-                }}>
-                  โทรศัพท์
-                </p>
-                <p style={{
-                  fontSize: '13px',
-                  color: '#6b7280',
-                  margin: '0'
-                }}>
-                  {store.phone}
-                </p>
-              </div>
+              !
             </div>
+            <p style={{
+              fontSize: '12px',
+              color: '#92400e',
+              margin: '0',
+              lineHeight: '1.4'
+            }}>
+              ตามหา QR Code หน้าร้าน แล้วสแกนเพื่อเช็คอิน
+            </p>
           </div>
 
           {/* Map Button */}

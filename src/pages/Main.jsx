@@ -341,6 +341,25 @@ function Main() {
         />
       )}
       
+      {/* Black Background for Car Animation */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 1, 1, 0] }}
+        transition={{
+          duration: 1.5,
+          times: [0, 0.1, 0.9, 1]
+        }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#000000',
+          zIndex: 999
+        }}
+      />
+
       {/* Car Animation */}
       <motion.div
         initial={{ x: '100vw', opacity: 0 }}
@@ -369,9 +388,9 @@ function Main() {
           src="/images/carOpen.png" 
           alt="Car"
           style={{
-            width: '50vw',
+            width: '80vw',
             height: 'auto',
-            filter: 'drop-shadow(0 0 30px rgba(255, 255, 255, 0.8))'
+            filter: 'drop-shadow(0 0 50px rgba(255, 255, 255, 0.9))'
           }}
         />
         
@@ -487,12 +506,13 @@ function Main() {
             animate={{ opacity: 1 }}
             transition={{ delay: 2.0, duration: 0.8 }} // Faster roadmap appearance
             style={{ 
-              height: '100vh',
+              height: '114vh',
               width: '100%',
               position: 'relative',
               zIndex: 2
             }}
       >
+
         <TransformWrapper
           initialScale={0.5}
           minScale={0.3}
@@ -538,8 +558,7 @@ function Main() {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: 'contain',
-                      zIndex: 2
+                      zIndex: 1
                     }}
                   />
 
@@ -576,15 +595,15 @@ function Main() {
                 console.log(`Store ${store.name} (ID: ${store.id}) - isCheckedIn: ${isCheckedIn}, checkedInStores:`, checkedInStores) // Debug log
                 console.log(`Image paths - Normal: ${store.image}, Black: ${store.imageBlack}`) // Debug log
                 const positions = [
-                  { top: '-30vh', left: '25vw' },   // Colonel Gold Fang
-                  { top: '0vh', right: '15vw' },  // Greenie & Elfie
-                  { top: '15vh', left: '5vw' },   // Splash
-                  { top: '40vh', right: '32vw' },  // Kongrit
-                  { top: '55vh', left: '-10vw' },   // Ai-Sam-Ta
-                  { top: '55vh', right: '-10vw' },  // Qtako
-                  { top: '70vh', left: '40vw' },   // Dylie
-                  { top: '90vh', right: '20vw' },  // World Boy
-                  { top: '110vh', left: '20vw' }    // Korn Doll
+                  { top: '-20vh', left: '25%' },   // Colonel Gold Fang
+                  { top: '5vh', right: '15%' },  // Greenie & Elfie
+                  { top: '20vh', left: '5%' },   // Splash
+                  { top: '45vh', right: '20%' },  // Kongrit
+                  { top: '65vh', left: '-5%' },   // Ai-Sam-Ta
+                  { top: '65vh', right: '0%' },  // Qtako
+                  { top: '85vh', left: '30%' },   // Dylie
+                  { top: '105vh', right: '11%' },  // World Boy
+                  { top: '125vh', left: '20%' }    // Korn Doll
                 ]
 
                 return (
@@ -666,15 +685,14 @@ function Main() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        cursor: 'pointer',
+                        cursor: 'default',
                         '@media (min-width: 768px)': {
                           width: '180px',
                           height: '180px'
                         }
                       }}
-                      onClick={() => handleTestScan(store.id)}
                       whileHover={{ 
-                        scale: 1.1,
+                        scale: 1.05,
                         boxShadow: '0 12px 25px rgba(0,0,0,0.0)',
                         transition: { duration: 0.2 }
                       }}
@@ -898,15 +916,26 @@ function Main() {
               bottom: '0', 
               left: '0', 
               right: '0',
-              backgroundColor: '#2E1350',
+              width: '100%',
+              height: '90px',
               padding: '0px 30px 5px 30px',
               display: 'flex',
-              justifyContent: 'space-around',
+              justifyContent: 'center',
               alignItems: 'flex-end',
               zIndex: 10,
-              borderTopLeftRadius: '45px',
-              borderTopRightRadius: '45px',
-              boxShadow: '0 -8px 30px rgba(0, 0, 0, 0.3), 0 -4px 15px rgba(0, 0, 0, 0.2)'
+              filter: 'drop-shadow(0 -13px 17px rgba(0, 0, 0, 0.25))',
+              background: 'url("data:image/svg+xml,%3Csvg width=\'430\' height=\'106\' viewBox=\'0 0 430 106\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M216 0C228.578 0 239.649 6.45044 246.086 16.2237C251.927 25.0936 260.258 34 270.879 34H400C416.569 34 430 47.4315 430 64V103C430 104.657 428.657 106 427 106H3C1.34315 106 4.83196e-08 104.657 0 103V64C7.73159e-07 47.4315 13.4315 34 30 34H161.121C171.742 34 180.073 25.0936 185.914 16.2237C192.351 6.45044 203.422 0 216 0Z\' fill=\'%232E1350\'/%3E%3C/svg%3E") no-repeat center center',
+              backgroundSize: '100% 100%'
+            }}>
+            {/* Button Container */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              width: '100%',
+              maxWidth: '400px',
+              gap: '20px',
+              marginBottom: '-19px'
             }}>
             {/* Home Button */}
             <motion.button
@@ -920,6 +949,7 @@ function Main() {
                 color: 'white',
                 cursor: 'pointer',
                 padding: '8px',
+                marginBottom: '-10px',
                 transition: 'all 0.3s ease'
               }}
               whileHover={{ 
@@ -1030,6 +1060,7 @@ function Main() {
                 color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af',
                 cursor: checkedInStores.length === 9 ? 'pointer' : 'not-allowed',
                 padding: '8px',
+                marginBottom: '-10px',
                 transition: 'all 0.3s ease'
               }}
               whileHover={checkedInStores.length === 9 ? { 
@@ -1062,6 +1093,7 @@ function Main() {
                 color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af'
               }}>Coupon</span>
             </motion.button>
+            </div>
           </motion.div>
     </div>
   )
