@@ -46,6 +46,13 @@ function Main() {
     { id: 9, name: 'World Boy', storeName: 'Blue Chéri Gaysorn Amarin', slug: 'world-boy', image: '/images/point-cars/World Boy.png', imageBlack: '/images/point-cars-black/World Boy.png', lat: 13.7571, lng: 100.5026, mapLink: 'https://maps.app.goo.gl/fW6d3AQniTgv69fx6' }
   ]
 
+  // Short URL Mappings - Add your QR code short URLs here
+  const shortUrlMappings = {
+    '3d0c3b9e': 'colonel-gold-fang', // hov.to/3d0c3b9e -> Colonel Gold Fang
+    // Add more mappings as you create more QR codes
+    // Format: 'short-code': 'store-slug'
+  }
+
   useEffect(() => {
     // Load checked-in stores from localStorage
     const loadCheckedInStores = () => {
@@ -153,13 +160,17 @@ function Main() {
     }
   }
 
-  const handleQRCodeDetected = (qrData) => {
+  const handleQRCodeDetected = async (qrData) => {
     console.log('🔍 QR Code detected:', qrData)
     console.log('📋 Available slugs:', stores.map(s => s.slug))
+    console.log('📋 Available store names:', stores.map(s => s.name))
+    console.log('📋 Available store IDs:', stores.map(s => s.id))
     
     // Clean and normalize QR data
     const cleanData = qrData.trim().toLowerCase()
     console.log('🧹 Cleaned QR data:', cleanData)
+    console.log('🧹 Original QR data length:', qrData.length)
+    console.log('🧹 Cleaned QR data length:', cleanData.length)
     
     // More flexible QR code matching
     let store = null
@@ -220,18 +231,22 @@ function Main() {
       }
     }
     
-    // If still not found, try any number in QR code as store ID
+    // If still not found, try any number in QR code as store ID (but be more strict)
     if (!store) {
       const numbers = cleanData.match(/\d+/g)
       if (numbers) {
+        console.log('🔢 Numbers found in QR data:', numbers)
         for (const num of numbers) {
           const id = parseInt(num)
-          if (id >= 1 && id <= 9) {
+          // Only match if it's a single digit (1-9) and not part of a longer string
+          if (id >= 1 && id <= 9 && num.length === 1) {
             store = stores.find(s => s.id === id)
             if (store) {
-              console.log('✅ Number-based match found:', store.name)
+              console.log('✅ Single-digit ID match found:', store.name, 'ID:', id)
               break
             }
+          } else {
+            console.log('❌ Skipping number:', num, 'ID:', id, 'Length:', num.length)
           }
         }
       }
@@ -246,16 +261,76 @@ function Main() {
         const hostname = url.hostname.toLowerCase()
         
         console.log('🌐 URL detected - pathname:', pathname, 'hostname:', hostname)
+        console.log('🌐 Full URL:', qrData)
         
-        // Try to match with store slug in URL path
-        store = stores.find(s => {
-          const slug = s.slug.toLowerCase()
-          return pathname.includes(slug) || hostname.includes(slug)
-        })
+        // Check if it's a short URL service
+        const isShortUrl = ['hov.to', 'bit.ly', 'tinyurl.com', 'short.link', 't.co'].some(domain => 
+          hostname.includes(domain)
+        )
         
-        if (store) console.log('✅ URL-based match found:', store.name)
+        if (isShortUrl) {
+          console.log('🔗 Short URL detected, trying to resolve...')
+          
+          // Try to resolve the short URL to get the actual destination
+          try {
+            const response = await fetch(qrData, { 
+              method: 'HEAD',
+              redirect: 'follow',
+              mode: 'no-cors' // This might not work due to CORS, but worth trying
+            })
+            
+            // If we can't resolve due to CORS, try a different approach
+            console.log('🌐 Attempting to resolve short URL...')
+            
+            // For now, we'll use a more flexible approach
+            // Check if the short URL might contain store information
+            const shortCode = pathname.replace('/', '')
+            console.log('🔍 Short code:', shortCode)
+            
+            // Try to extract meaningful information from the short code
+            // This is a fallback approach since we can't always resolve short URLs
+            const mappedSlug = shortUrlMappings[shortCode]
+            if (mappedSlug) {
+              store = stores.find(s => s.slug === mappedSlug)
+              if (store) {
+                console.log('✅ Short URL resolved to store:', store.name, 'slug:', mappedSlug)
+              }
+            } else {
+              console.log('❌ No mapping found for short code:', shortCode)
+              console.log('💡 Consider adding this short code to the mappings')
+            }
+            
+          } catch (error) {
+            console.log('❌ Could not resolve short URL:', error.message)
+            console.log('💡 This is expected due to CORS restrictions')
+          }
+        } else {
+          // Try to match with store slug in URL path (for full URLs)
+          store = stores.find(s => {
+            const slug = s.slug.toLowerCase()
+            const pathMatch = pathname.includes(slug)
+            const hostMatch = hostname.includes(slug)
+            console.log(`🔍 Checking ${s.name} (${slug}): path=${pathMatch}, host=${hostMatch}`)
+            return pathMatch || hostMatch
+          })
+          
+          if (store) console.log('✅ URL-based match found:', store.name)
+        }
       } catch (e) {
-        // Not a valid URL, continue
+        console.log('❌ Not a valid URL:', e.message)
+        // Try to extract slug from non-URL text
+        const possibleSlugs = qrData.match(/[a-z-]+/gi)
+        if (possibleSlugs) {
+          console.log('🔍 Possible slugs found:', possibleSlugs)
+          for (const possibleSlug of possibleSlugs) {
+            const cleanSlug = possibleSlug.toLowerCase().replace(/[^a-z-]/g, '')
+            store = stores.find(s => s.slug === cleanSlug)
+            if (store) {
+              console.log('✅ Slug match found from text:', store.name, 'slug:', cleanSlug)
+              break
+            }
+          }
+        }
       }
     }
     
@@ -282,6 +357,11 @@ function Main() {
       navigate(checkinUrl)
     } else {
       console.log('❌ Store not found for QR data:', qrData)
+      console.log('❌ Cleaned data:', cleanData)
+      console.log('❌ Available stores for comparison:')
+      stores.forEach(s => {
+        console.log(`  - ${s.name} (${s.slug}) ID: ${s.id}`)
+      })
       console.log('🔄 Continuing to scan...')
       
       // Show a brief visual feedback that QR was detected but not recognized

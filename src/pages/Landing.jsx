@@ -257,7 +257,7 @@ function Landing() {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        marginTop: '-29%'
+        marginTop: '-38%'
       }}>
         {/* Body Content Image (body-start.png) - Responsive */}
         <ImageWithLoading
@@ -266,14 +266,14 @@ function Landing() {
           style={{
             width: '90%',
             height: 'auto',
-            maxHeight: '70vh',
+            maxHeight: '60vh',
             objectFit: 'contain',
             display: 'block',
             margin: '0 auto'
           }}
           skeletonStyle={{
-            width: '90%',
-            height: '50vh',
+            width: '80%',
+            height: '40vh',
             borderRadius: '0'
           }}
         />
@@ -283,7 +283,7 @@ function Landing() {
       {/* Layer 5: Start Button (Front) */}
       <div style={{ 
         position: 'absolute',
-        bottom: '20px',
+        bottom: '60px',
         left: '20px',
         right: '20px',
         zIndex: 5,
