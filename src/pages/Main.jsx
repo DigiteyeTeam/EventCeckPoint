@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { QrCode, Home, MapPin, X, Ticket } from 'lucide-react'
 import { getUserData, clearAllData } from '../utils/storage'
@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import Particles from '@tsparticles/react'
 import { loadBasic } from '@tsparticles/basic'
 import ImageWithLoading from '../components/ImageWithLoading'
+import QrScanner from 'qr-scanner'
 
 function Main() {
   const navigate = useNavigate()
@@ -16,6 +17,8 @@ function Main() {
   const [showCamera, setShowCamera] = useState(false)
   const [stream, setStream] = useState(null)
   const [particlesInit, setParticlesInit] = useState(false)
+  const [qrScanner, setQrScanner] = useState(null)
+  const videoRef = useRef(null)
 
   // Check if user is registered
   useEffect(() => {
@@ -108,14 +111,68 @@ function Main() {
   const handleScanClick = async () => {
     console.log('Scan clicked!')
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } 
-      })
-      setStream(mediaStream)
       setShowCamera(true)
+      
+      // Wait for video element to be ready
+      setTimeout(() => {
+        if (videoRef.current) {
+          const scanner = new QrScanner(
+            videoRef.current,
+            (result) => {
+              console.log('QR Code detected:', result.data)
+              handleQRCodeDetected(result.data)
+            },
+            {
+              onDecodeError: (error) => {
+                // Silently handle decode errors (normal during scanning)
+                console.log('QR decode error:', error)
+              },
+              highlightScanRegion: true,
+              highlightCodeOutline: true,
+            }
+          )
+          
+          scanner.start().catch((error) => {
+            console.error('QR Scanner start error:', error)
+            alert('ไม่สามารถเริ่มต้น QR Scanner ได้')
+          })
+          
+          setQrScanner(scanner)
+        }
+      }, 100)
     } catch (error) {
       console.error('Error accessing camera:', error)
       alert('ไม่สามารถเข้าถึงกล้องได้ กรุณาอนุญาตการเข้าถึงกล้อง')
+    }
+  }
+
+  const handleQRCodeDetected = (qrData) => {
+    console.log('QR Code data:', qrData)
+    
+    // Check if QR code contains store slug
+    const store = stores.find(s => qrData.includes(s.slug))
+    if (store) {
+      console.log('Store found:', store.name)
+      // Stop scanner
+      if (qrScanner) {
+        qrScanner.stop()
+        qrScanner.destroy()
+        setQrScanner(null)
+      }
+      setShowCamera(false)
+      
+      // Sound Effect
+      playCheckinSound()
+      
+      // Haptic Feedback
+      triggerHapticFeedback()
+      
+      // Navigate to checkin page
+      const checkinUrl = `/checkin/${store.slug}`
+      navigate(checkinUrl)
+    } else {
+      console.log('Store not found for QR data:', qrData)
+      alert('QR Code ไม่ถูกต้อง กรุณาสแกน QR Code ที่ถูกต้อง')
     }
   }
 
@@ -167,6 +224,16 @@ function Main() {
     }
   }, [])
 
+  // Cleanup QR Scanner on unmount
+  useEffect(() => {
+    return () => {
+      if (qrScanner) {
+        qrScanner.stop()
+        qrScanner.destroy()
+      }
+    }
+  }, [qrScanner])
+
   const playCheckinSound = () => {
     // Create audio context for sound effect
     try {
@@ -201,6 +268,14 @@ function Main() {
   }
 
   const handleCloseCamera = () => {
+    // Stop QR Scanner
+    if (qrScanner) {
+      qrScanner.stop()
+      qrScanner.destroy()
+      setQrScanner(null)
+    }
+    
+    // Stop camera stream
     if (stream) {
       stream.getTracks().forEach(track => track.stop())
       setStream(null)
@@ -685,24 +760,17 @@ function Main() {
             position: 'relative',
             backgroundColor: '#000'
           }}>
-            {stream && (
-              <video
-                ref={(video) => {
-                  if (video && stream) {
-                    video.srcObject = stream
-                    video.play()
-                  }
-                }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
-                }}
-                autoPlay
-                playsInline
-                muted
-              />
-            )}
+            <video
+              ref={videoRef}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+              autoPlay
+              playsInline
+              muted
+            />
 
             {/* Scanning Overlay */}
             <div style={{
