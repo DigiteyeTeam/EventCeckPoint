@@ -1,78 +1,316 @@
 import { useNavigate } from 'react-router-dom'
 import { Car } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { getUserData } from '../utils/storage'
+import LoadingScreen from '../components/LoadingScreen'
+import ImageWithLoading from '../components/ImageWithLoading'
+import { motion } from 'framer-motion'
+import { gsap } from 'gsap'
 
 function Landing() {
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
+  const spotlightRef = useRef(null)
+  const raysRef = useRef(null)
+  const particlesRef = useRef([])
+  const topStartRef = useRef(null)
+
+  // Check if user is already registered, redirect to main
+  useEffect(() => {
+    console.log('Landing: Checking user data...')
+    const userData = getUserData()
+    console.log('Landing: userData =', userData)
+    if (userData) {
+      console.log('Landing: User registered, redirecting to /main')
+      navigate('/main')
+      return
+    }
+    console.log('Landing: User not registered, showing landing page')
+  }, [navigate])
+
+  // GSAP Spotlight Effects
+  useEffect(() => {
+    if (!isLoading) {
+      // Spotlight pulse animation
+      gsap.to(spotlightRef.current, {
+        scale: 1.2,
+        opacity: 0.9,
+        duration: 2,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1
+      })
+
+      // Rotating rays animation
+      gsap.to(raysRef.current, {
+        rotation: 360,
+        duration: 20,
+        ease: "none",
+        repeat: -1
+      })
+
+      // Particles floating animation
+      particlesRef.current.forEach((particle, index) => {
+        gsap.to(particle, {
+          y: -30,
+          x: Math.random() * 20 - 10,
+          opacity: 0.8,
+          scale: 1.2,
+          duration: 3 + Math.random() * 2,
+          ease: "power2.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: index * 0.1
+        })
+      })
+
+      // Top Start Image floating animation
+      gsap.to(topStartRef.current, {
+        y: -10,
+        rotation: 1,
+        duration: 3,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1
+      })
+    }
+  }, [isLoading])
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false)
+  }
+
+
+  if (isLoading) {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+  }
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* Layer 1: Background Gradient (Behind everything) */}
+    <div style={{ 
+      position: 'relative', 
+      minHeight: '100vh',
+      animation: 'fadeIn 0.8s ease-out',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden'
+    }}>
+      {/* GSAP Spotlight Effect - In front of bg-start.png */}
+      <div 
+        ref={spotlightRef}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '700px',
+          height: '700px',
+          background: 'radial-gradient(circle, rgba(255,165,0,0.5) 0%, rgba(255,140,0,0.4) 20%, rgba(255,69,0,0.3) 40%, rgba(255,20,147,0.15) 70%, transparent 100%)',
+          borderRadius: '50%',
+          zIndex: 2,
+          pointerEvents: 'none',
+          boxShadow: '0 0 80px rgba(255,165,0,0.4), 0 0 150px rgba(255,140,0,0.3), 0 0 220px rgba(255,69,0,0.2), 0 0 300px rgba(255,20,147,0.1)'
+        }} 
+      />
+
+      {/* GSAP Rotating Light Rays - In front of bg-start.png */}
+      <div 
+        ref={raysRef}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '1500px',
+          height: '1500px',
+          zIndex: 2,
+          pointerEvents: 'none'
+        }}
+      >
+        {[...Array(360)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '3px',
+              height: '750px',
+              background: 'linear-gradient(to bottom, rgba(255,165,0,0.5) 0%, rgba(255,140,0,0.4) 20%, rgba(255,69,0,0.25) 50%, rgba(255,20,147,0.08) 80%, transparent 100%)',
+              transformOrigin: '50% 0%',
+              transform: `translate(-50%, -50%) rotate(${i}deg)`,
+              opacity: 0.4,
+              boxShadow: '0 0 8px rgba(255,165,0,0.3), 0 0 15px rgba(255,140,0,0.15)'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* GSAP Floating Particles - In front of bg-start.png */}
+      {[...Array(30)].map((_, i) => (
+        <div
+          key={i}
+          ref={el => particlesRef.current[i] = el}
+          style={{
+            position: 'absolute',
+            width: '7px',
+            height: '7px',
+            background: 'radial-gradient(circle, rgba(255,165,0,0.5) 0%, rgba(255,140,0,0.25) 70%, transparent 100%)',
+            borderRadius: '50%',
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            zIndex: 2,
+            boxShadow: '0 0 10px rgba(255,165,0,0.4), 0 0 20px rgba(255,140,0,0.2), 0 0 30px rgba(255,69,0,0.1)'
+          }}
+        />
+      ))}
+
+      {/* GSAP Glowing Orbs - In front of bg-start.png */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '10%',
+          width: '130px',
+          height: '130px',
+          background: 'radial-gradient(circle, rgba(255,165,0,0.35) 0%, rgba(255,140,0,0.18) 50%, transparent 100%)',
+          borderRadius: '50%',
+          zIndex: 2,
+          boxShadow: '0 0 35px rgba(255,165,0,0.3), 0 0 70px rgba(255,140,0,0.2), 0 0 100px rgba(255,69,0,0.15)'
+        }}
+      />
+      
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '30%',
+          right: '15%',
+          width: '110px',
+          height: '110px',
+          background: 'radial-gradient(circle, rgba(255,69,0,0.35) 0%, rgba(255,69,0,0.18) 50%, transparent 100%)',
+          borderRadius: '50%',
+          zIndex: 2,
+          boxShadow: '0 0 35px rgba(255,69,0,0.3), 0 0 70px rgba(255,20,147,0.2), 0 0 100px rgba(255,165,0,0.15)'
+        }}
+      />
+      {/* Header: Top Start Image */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        height: 'auto',
+        zIndex: 3,
+        textAlign: 'center'
+      }}>
+        <ImageWithLoading
+          ref={topStartRef}
+          src="/images/top-start.png"
+          alt="Header"
+          style={{
+            width: '90%',
+            height: 'auto',
+            maxHeight: '24vh',
+            objectFit: 'contain',
+            display: 'block',
+            margin: '0 auto'
+          }}
+        />
+      </div>
+
+      {/* Body: Background Image (bg-start.png) */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'linear-gradient(to bottom, #3B82F6, #8B5CF6, #EC4899, #F97316)',
+        backgroundImage: 'url(/images/bg-start.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         zIndex: 1
       }} />
       
-      {/* Layer 2: Background Cars Image */}
-      <img 
-        src="/images/background.png" 
-        alt=""
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 2
-        }}
-      />
-      
-      {/* Layer 3: Logo and App Name */}
+      {/* Body Section */}
       <div style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 4,
-        textAlign: 'center'
+        position: 'relative',
+        flex: 1,
+        zIndex: 2,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        marginTop: '-29%'
       }}>
-        <img 
-          src="/images/logo-app.png" 
+        {/* Body Content Image (body-start.png) - Responsive */}
+        <ImageWithLoading
+          src="/images/body-start.png" 
           alt=""
           style={{
-            maxWidth: '300px',
-            width: '100%',
-            height: 'auto'
+            width: '90%',
+            height: 'auto',
+            maxHeight: '70vh',
+            objectFit: 'contain',
+            display: 'block',
+            margin: '0 auto'
+          }}
+          skeletonStyle={{
+            width: '90%',
+            height: '50vh',
+            borderRadius: '0'
           }}
         />
       </div>
       
-      {/* Layer 4: Artists Text */}
-      <div style={{
-        position: 'absolute',
-        top: '20%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 3,
-        textAlign: 'center'
-      }}>
-        <img 
-          src="/images/artists-text.png" 
-          alt=""
+        {/* Layer 3: Logo and App Name */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 4,
+          textAlign: 'center',
+          animation: 'slideUp 0.8s ease-out 0.4s both'
+        }}>
+          <ImageWithLoading
+            src="/images/logo-app.png" 
+            alt=""
+            style={{
+              maxWidth: '300px',
+              width: '100%',
+              height: 'auto'
+            }}
+            skeletonStyle={{
+              width: '300px',
+              height: '150px',
+              borderRadius: '8px'
+            }}
+          />
+        </div>
+        
+        {/* Layer 4: Artists Text */}
+        <div style={{
+          position: 'absolute',
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 3,
+          textAlign: 'center',
+          animation: 'slideUp 0.6s ease-out 0.2s both'
+        }}>
+          <ImageWithLoading
+            src="/images/artists-text.png" 
+            alt=""
           style={{
             maxWidth: '250px',
             width: '100%',
             height: 'auto'
           }}
-        />
-      </div>
+          skeletonStyle={{
+            width: '250px',
+            height: '80px',
+            borderRadius: '8px'
+          }}
+          />
+        </div>
       
       {/* Layer 5: Start Button (Front) */}
       <div style={{ 
@@ -80,7 +318,8 @@ function Landing() {
         bottom: '20px',
         left: '20px',
         right: '20px',
-        zIndex: 5
+        zIndex: 5,
+        animation: 'slideUp 0.8s ease-out 0.6s both'
       }}>
         <button
           onClick={() => navigate('/profile')}
@@ -88,7 +327,7 @@ function Landing() {
             width: '100%',
             backgroundColor: 'white',
             color: 'black',
-            padding: '20px',
+            padding: '12px',
             borderRadius: '24px',
             fontWeight: '700',
             fontSize: '20px',
@@ -120,6 +359,35 @@ function Landing() {
           Start
         </button>
       </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes fadeIn {
+          from { 
+            opacity: 0; 
+            transform: translateY(20px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        
+        @keyframes slideUp {
+          from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        
+        .landing-content {
+          animation: slideUp 0.6s ease-out 0.2s both;
+        }
+      `}</style>
     </div>
   )
 }

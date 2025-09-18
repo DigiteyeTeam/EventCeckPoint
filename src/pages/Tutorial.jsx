@@ -1,9 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getUserData } from '../utils/storage'
+import ImageWithLoading from '../components/ImageWithLoading'
 
 function Tutorial() {
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(0)
+
+  // Check if user is registered
+  useEffect(() => {
+    const userData = getUserData()
+    if (!userData) {
+      navigate('/')
+      return
+    }
+  }, [navigate])
 
   const steps = [
     {
@@ -15,11 +26,6 @@ function Tutorial() {
       title: "สาธิตวิธีการใช้งาน", 
       image: "/images/tutorial-2.png", // ภาพหน้า Roadmap
       description: "กดปุ่ม Map เพื่อนำทางไปยังร้าน"
-    },
-    {
-      title: "สาธิตวิธีการใช้งาน",
-      image: "/images/tutorial-3.png", // ภาพหน้า Google Maps
-      description: "เด้งมายัง Google Map เพื่อนำทาง\nพาไปยังร้านต่างๆ"
     }
   ]
 
@@ -40,6 +46,7 @@ function Tutorial() {
   }
 
   const currentStepData = steps[currentStep]
+  console.log('Tutorial - Current Step:', currentStep, 'Image:', currentStepData.image) // Debug log
 
   return (
     <div style={{ 
@@ -73,7 +80,7 @@ function Tutorial() {
         padding: '20px',
         backgroundColor: 'white'
       }}>
-        <img 
+        <img
           src={currentStepData.image} 
           alt={`Tutorial Step ${currentStep + 1}`}
           style={{
@@ -83,6 +90,8 @@ function Tutorial() {
             objectFit: 'contain',
             width: '100%'
           }}
+          onLoad={() => console.log(`Tutorial image loaded: ${currentStepData.image}`)}
+          onError={() => console.log(`Tutorial image failed to load: ${currentStepData.image}`)}
         />
       </div>
 

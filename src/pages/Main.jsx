@@ -6,6 +6,7 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { motion } from 'framer-motion'
 import Particles from '@tsparticles/react'
 import { loadBasic } from '@tsparticles/basic'
+import ImageWithLoading from '../components/ImageWithLoading'
 
 function Main() {
   const navigate = useNavigate()
@@ -15,34 +16,85 @@ function Main() {
   const [stream, setStream] = useState(null)
   const [particlesInit, setParticlesInit] = useState(false)
 
+  // Check if user is registered
+  useEffect(() => {
+    console.log('Main: Checking user data...')
+    console.log('Main: userData =', userData)
+    if (!userData) {
+      console.log('Main: User not registered, redirecting to /')
+      navigate('/')
+      return
+    }
+    console.log('Main: User registered, showing main page')
+  }, [userData, navigate])
+
   // Store data with coordinates and map links
   const stores = [
-    { id: 1, name: 'Colonel Gold Fang', storeName: 'Dough Bros. (G Floor)', image: '/images/point-cars/Colonel Gold Fang.png', lat: 13.7563, lng: 100.5018, mapLink: 'https://share.google/5SV89Joyu3vSHJLvb' },
-    { id: 2, name: 'Greenie & Elfie', storeName: 'Mickey Dinner (G Floor)', image: '/images/point-cars/Greenie & Elfie.png', lat: 13.7564, lng: 100.5019, mapLink: 'https://share.google/qwHpx8OfZWGyL3ju' },
-    { id: 3, name: 'Splash', storeName: 'Villa Market (G Floor)', image: '/images/point-cars/Splash.png', lat: 13.7565, lng: 100.5020, mapLink: 'https://share.google/TbQCASan9zyxV4rPx' },
-    { id: 4, name: 'Kongrit', storeName: 'Nico Nico (2nd Floor)', image: '/images/point-cars/Kongrit.png', lat: 13.7566, lng: 100.5021, mapLink: 'https://share.google/NwgFbWS3SApY5vThd' },
-    { id: 5, name: 'Ai-Sam-Ta', storeName: 'Raynue (3rd Floor)', image: '/images/point-cars/Ai-Sam-Ta.png', lat: 13.7567, lng: 100.5022, mapLink: 'https://share.google/E1TbXn4NBWHzAWWYc' },
-    { id: 6, name: 'Qtako', storeName: 'ToroTora (3rd Floor)', image: '/images/point-cars/Qtako.png', lat: 13.7568, lng: 100.5023, mapLink: 'https://share.google/b6zvE1H6qh42rS10M' },
-    { id: 7, name: 'Dylie', storeName: 'Brewave (4th Floor)', image: '/images/point-cars/Dylie.png', lat: 13.7569, lng: 100.5024, mapLink: 'https://share.google/AveC9P3pi8ljrMpjs' },
-    { id: 8, name: 'Korn Doll', storeName: 'Blue Cheri (4th Floor)', image: '/images/point-cars/Korn Doll.png', lat: 13.7570, lng: 100.5025, mapLink: 'https://share.google/vk3DaptEFUXRoHo7g' },
-    { id: 9, name: 'World Boy', storeName: 'Jiaozi (4th Floor)', image: '/images/point-cars/World Boy.png', lat: 13.7571, lng: 100.5026, mapLink: 'https://share.google/UhEIh6LVzSOmvI8lL' }
+    { id: 1, name: 'Colonel Gold Fang', storeName: 'Dough Bros. Pizza & Doughnuts', slug: 'colonel-gold-fang', image: '/images/point-cars/Colonel Gold Fang.png', imageBlack: '/images/point-cars-black/Colonel Gold Fang.png', lat: 13.7563, lng: 100.5018, mapLink: 'https://maps.app.goo.gl/swtgj2HKEG8jBRti8' },
+    { id: 2, name: 'Greenie & Elfie', storeName: "Mickey's Diner BKK", slug: 'greenie-elfie', image: '/images/point-cars/Greenie & Elfie.png', imageBlack: '/images/point-cars-black/Greenie & Elfie.png', lat: 13.7564, lng: 100.5019, mapLink: 'https://maps.app.goo.gl/BvNV1PHRYoScZVHj9' },
+    { id: 3, name: 'Splash', storeName: 'Villa Market - Gaysorn Amarin', slug: 'splash', image: '/images/point-cars/Splash.png', imageBlack: '/images/point-cars-black/Splash.png', lat: 13.7565, lng: 100.5020, mapLink: 'https://maps.app.goo.gl/W88CtzsNZeAAZFLA6' },
+    { id: 4, name: 'Kongrit', storeName: 'NICO NICO - Gaysorn Amarin', slug: 'kongrit', image: '/images/point-cars/Kongrit.png', imageBlack: '/images/point-cars-black/Kongrit.png', lat: 13.7566, lng: 100.5021, mapLink: 'https://maps.app.goo.gl/e1Cy8iCXHPXo1pog9' },
+    { id: 5, name: 'Ai-Sam-Ta', storeName: 'Raynue', slug: 'ai-sam-ta', image: '/images/point-cars/Ai-Sam-Ta.png', imageBlack: '/images/point-cars-black/Ai-Sam-Ta.png', lat: 13.7567, lng: 100.5022, mapLink: 'https://maps.app.goo.gl/fWDpCrXSph6RKT779' },
+    { id: 6, name: 'Qtako', storeName: 'ToroTora', slug: 'qtako', image: '/images/point-cars/Qtako.png', imageBlack: '/images/point-cars-black/Qtako.png', lat: 13.7568, lng: 100.5023, mapLink: 'https://maps.app.goo.gl/yYv1v8YqwTohfY4U6' },
+    { id: 7, name: 'Dylie', storeName: 'Brewave Gaysorn Amarin', slug: 'dylie', image: '/images/point-cars/Dylie.png', imageBlack: '/images/point-cars-black/Dylie.png', lat: 13.7569, lng: 100.5024, mapLink: 'https://maps.app.goo.gl/8cmZYMrFsP5rNWQo8' },
+    { id: 8, name: 'Korn Doll', storeName: 'Jiaozi Jiuba', slug: 'korn-doll', image: '/images/point-cars/Korn Doll.png', imageBlack: '/images/point-cars-black/Korn Doll.png', lat: 13.7570, lng: 100.5025, mapLink: 'https://maps.app.goo.gl/x3uJkfpSoja8uPxs9' },
+    { id: 9, name: 'World Boy', storeName: 'Blue Chéri Gaysorn Amarin', slug: 'world-boy', image: '/images/point-cars/World Boy.png', imageBlack: '/images/point-cars-black/World Boy.png', lat: 13.7571, lng: 100.5026, mapLink: 'https://maps.app.goo.gl/fW6d3AQniTgv69fx6' }
   ]
 
   useEffect(() => {
     // Load checked-in stores from localStorage
-    const saved = localStorage.getItem('checkedInStores')
-    if (saved) {
-      setCheckedInStores(JSON.parse(saved))
+    const loadCheckedInStores = () => {
+      const saved = localStorage.getItem('checkedInStores')
+      if (saved) {
+        const parsedStores = JSON.parse(saved)
+        setCheckedInStores(parsedStores)
+        console.log('Loaded checked-in stores:', parsedStores) // Debug log
+      } else {
+        setCheckedInStores([])
+        console.log('No checked-in stores found, setting empty array')
+      }
     }
+    
+    loadCheckedInStores()
+
+    // Listen for storage changes (when user comes back from checkin page)
+    const handleStorageChange = () => {
+      console.log('Storage change detected, reloading...')
+      loadCheckedInStores()
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    
+    // Also check on focus (when user comes back to tab)
+    window.addEventListener('focus', handleStorageChange)
 
     // Initialize particles
     loadBasic().then(() => {
       setParticlesInit(true)
+    }).catch((error) => {
+      console.error('Particles initialization failed:', error)
     })
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('focus', handleStorageChange)
+    }
   }, [])
 
+  // Force state sync with localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('checkedInStores')
+    if (saved) {
+      const parsedStores = JSON.parse(saved)
+      if (JSON.stringify(parsedStores) !== JSON.stringify(checkedInStores)) {
+        console.log('State mismatch detected, syncing...', { localStorage: parsedStores, state: checkedInStores })
+        setCheckedInStores(parsedStores)
+      }
+    }
+  }, [checkedInStores])
+
   const handleMapClick = (store) => {
-    window.open(store.mapLink, '_blank')
+    navigate(`/store/${store.id}`)
   }
 
   const handleScanClick = async () => {
@@ -68,11 +120,43 @@ function Main() {
       // Haptic Feedback
       triggerHapticFeedback()
       
-      // จำลอง URL ที่ได้จาก QR Code
-      const checkinUrl = `/checkin/${store.name.toLowerCase().replace(/\s+/g, '-').replace(/&/g, '')}`
+      // ใช้ slug field ที่กำหนดไว้แล้ว
+      const checkinUrl = `/checkin/${store.slug}`
       navigate(checkinUrl)
     }
   }
+
+  // Force refresh when component becomes visible (when returning from checkin)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        const saved = localStorage.getItem('checkedInStores')
+        if (saved) {
+          const parsedStores = JSON.parse(saved)
+          setCheckedInStores(parsedStores)
+          console.log('Visibility change - refreshed checked-in stores:', parsedStores) // Debug log
+        }
+      }
+    }
+
+    // Also refresh on page show (when returning from another tab/page)
+    const handlePageShow = () => {
+      const saved = localStorage.getItem('checkedInStores')
+      if (saved) {
+        const parsedStores = JSON.parse(saved)
+        setCheckedInStores(parsedStores)
+        console.log('Page show - refreshed checked-in stores:', parsedStores) // Debug log
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('pageshow', handlePageShow)
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('pageshow', handlePageShow)
+    }
+  }, [])
 
   const playCheckinSound = () => {
     // Create audio context for sound effect
@@ -123,7 +207,7 @@ function Main() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: '#0f172a', // Dark blue background for car animation
+      background: '#1e293b', // Brighter blue background for car animation
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -138,7 +222,7 @@ function Main() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'linear-gradient(to bottom, #1a0d2e, #6b1a4f, #8b0e1f)',
+          background: 'linear-gradient(to bottom, #2D1350, #AA1D79, #ED162B)',
           zIndex: 1
         }}
       />
@@ -368,25 +452,33 @@ function Main() {
               padding: '5px',
               textAlign: 'center',
               position: 'relative',
-              zIndex: 3
+              zIndex: 3,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%'
             }}
       >
         
-        {/* ROADMAP Text */}
-        <h1 style={{ 
-          color: '#FCD34D', 
-          fontSize: '32px', 
-          fontWeight: '900',
-          fontFamily: "'Poppins', sans-serif",
-          margin: '0',
-          letterSpacing: '2px',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-          position: 'relative',
-          zIndex: 2,
-
-        }}>
-          ROADMAP
-        </h1>
+        {/* ROADMAP Image */}
+        <ImageWithLoading
+          src="/images/roadmap.png" 
+          alt="ROADMAP"
+          style={{
+            height: '60px',
+            width: 'auto',
+            maxWidth: '300px',
+            objectFit: 'contain',
+            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))',
+            position: 'relative',
+            zIndex: 2
+          }}
+          skeletonStyle={{
+            height: '60px',
+            width: '200px',
+            borderRadius: '8px'
+          }}
+        />
       </motion.div>
 
           {/* Roadmap Area */}
@@ -481,16 +573,18 @@ function Main() {
               {/* Store Points */}
               {stores.map((store, index) => {
                 const isCheckedIn = checkedInStores.includes(store.id)
+                console.log(`Store ${store.name} (ID: ${store.id}) - isCheckedIn: ${isCheckedIn}, checkedInStores:`, checkedInStores) // Debug log
+                console.log(`Image paths - Normal: ${store.image}, Black: ${store.imageBlack}`) // Debug log
                 const positions = [
-                  { top: '-20vh', left: '40vw' },   // Colonel Gold Fang
+                  { top: '-30vh', left: '25vw' },   // Colonel Gold Fang
                   { top: '0vh', right: '15vw' },  // Greenie & Elfie
-                  { top: '10vh', left: '12vw' },   // Splash
-                  { top: '40vh', right: '50vw' },  // Kongrit
-                  { top: '55vh', left: '5vw' },   // Ai-Sam-Ta
-                  { top: '55vh', right: '5vw' },  // Qtako
-                  { top: '70vh', left: '50vw' },   // Dylie
-                  { top: '90vh', right: '30vw' },  // World Boy
-                  { top: '100vh', left: '15vw' }    // Korn Doll
+                  { top: '15vh', left: '5vw' },   // Splash
+                  { top: '40vh', right: '32vw' },  // Kongrit
+                  { top: '55vh', left: '-10vw' },   // Ai-Sam-Ta
+                  { top: '55vh', right: '-10vw' },  // Qtako
+                  { top: '70vh', left: '40vw' },   // Dylie
+                  { top: '90vh', right: '20vw' },  // World Boy
+                  { top: '110vh', left: '20vw' }    // Korn Doll
                 ]
 
                 return (
@@ -541,7 +635,7 @@ function Main() {
                             }
                           }}
                         >
-                      <img 
+                      <ImageWithLoading
                         src="/images/map.png" 
                         alt="Map Pin"
                         style={{
@@ -553,6 +647,11 @@ function Main() {
                             height: '180px'
                           }
                         }}
+                        skeletonStyle={{
+                          width: '100px',
+                          height: '120px',
+                          borderRadius: '8px'
+                        }}
                       />
                     </motion.button>
 
@@ -560,33 +659,31 @@ function Main() {
                     <motion.div 
                       style={{
                         marginTop: '5px',
-                        width: '100px',
-                        height: '100px',
-                        borderRadius: '50%',
-                        overflow: 'hidden',
+                        width: '140px',
+                        height: '140px',
          
-                        backgroundColor: isCheckedIn ? 'transparent' : '#374151',
+                        backgroundColor: 'transparent',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
                         '@media (min-width: 768px)': {
-                          width: '150px',
-                          height: '150px'
+                          width: '180px',
+                          height: '180px'
                         }
                       }}
                       onClick={() => handleTestScan(store.id)}
                       whileHover={{ 
                         scale: 1.1,
-                        boxShadow: '0 12px 25px rgba(0,0,0,0.4)',
+                        boxShadow: '0 12px 25px rgba(0,0,0,0.0)',
                         transition: { duration: 0.2 }
                       }}
                       whileTap={{ scale: 0.9 }}
                       animate={isCheckedIn ? {
                         boxShadow: [
-                          '0 4px 8px rgba(0,0,0,0.1)',
-                          '0 12px 20px rgba(220, 38, 38, 0.4)',
-                          '0 4px 8px rgba(0,0,0,0.1)'
+                          '0 4px 8px rgba(0,0,0,0.0)',
+                          '0 12px 20px rgba(0, 0, 0, 0.0)',
+                          '0 4px 8px rgba(0,0,0,0.0)'
                         ],
                         scale: [1, 1.02, 1]
                       } : {
@@ -605,28 +702,17 @@ function Main() {
                         }
                       }}
                     >
-                      {isCheckedIn ? (
-                        <img 
-                          src={store.image} 
-                          alt={store.name}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover'
-                          }}
-                        />
-                      ) : (
-                        <span style={{
-                          color: 'white',
-                          fontSize: '24px',
-                          fontWeight: 'bold',
-                          '@media (min-width: 768px)': {
-                            fontSize: '36px'
-                          }
-                        }}>
-                          ?
-                        </span>
-                      )}
+                      <img
+                        src={isCheckedIn ? store.image : store.imageBlack} 
+                        alt={store.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain'
+                        }}
+                        onLoad={() => console.log(`Image loaded for ${store.name}: ${isCheckedIn ? store.image : store.imageBlack}`)}
+                        onError={() => console.log(`Image failed to load for ${store.name}: ${isCheckedIn ? store.image : store.imageBlack}`)}
+                      />
                     </motion.div>
 
                     {/* Store Name */}
@@ -813,7 +899,7 @@ function Main() {
               left: '0', 
               right: '0',
               backgroundColor: '#2E1350',
-              padding: '-20px 20px 5px 20px',
+              padding: '0px 30px 5px 30px',
               display: 'flex',
               justifyContent: 'space-around',
               alignItems: 'flex-end',
@@ -929,46 +1015,51 @@ function Main() {
 
             {/* Coupon Button */}
             <motion.button
-              onClick={() => navigate('/coupon')}
+              onClick={() => {
+                if (checkedInStores.length === 9) {
+                  navigate('/coupon')
+                }
+              }}
+              disabled={checkedInStores.length !== 9}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 background: 'none',
                 border: 'none',
-                color: checkedInStores.length > 1 ? 'white' : '#8B5CF6',
-                cursor: 'pointer',
+                color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af',
+                cursor: checkedInStores.length === 9 ? 'pointer' : 'not-allowed',
                 padding: '8px',
                 transition: 'all 0.3s ease'
               }}
-              whileHover={{ 
+              whileHover={checkedInStores.length === 9 ? { 
                 scale: 1.1,
-                color: '#FCD34D',
+                color: '#F59E0B',
                 transition: { duration: 0.2 }
-              }}
-              whileTap={{ scale: 0.95 }}
-              animate={{
+              } : {}}
+              whileTap={checkedInStores.length === 9 ? { scale: 0.95 } : {}}
+              animate={checkedInStores.length === 9 ? {
                 y: [0, -2, 0]
-              }}
-              transition={{
+              } : {}}
+              transition={checkedInStores.length === 9 ? {
                 y: {
                   duration: 3,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }
-              }}
+              } : {}}
             >
               <Ticket style={{ 
                 width: '22px', 
                 height: '22px', 
                 marginBottom: '4px',
-                color: checkedInStores.length > 1 ? 'white' : '#8B5CF6'
+                color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af'
               }} />
               <span style={{ 
                 fontSize: '10px', 
                 fontWeight: '500', 
                 fontFamily: "'Inter', sans-serif",
-                color: checkedInStores.length > 1 ? 'white' : '#8B5CF6'
+                color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af'
               }}>Coupon</span>
             </motion.button>
           </motion.div>

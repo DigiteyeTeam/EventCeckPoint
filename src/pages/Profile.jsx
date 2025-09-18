@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { User } from 'lucide-react'
 import { saveUserData, saveDeviceId, generateDeviceId } from '../utils/storage'
+import ImageWithLoading from '../components/ImageWithLoading'
 
 function Profile() {
   const navigate = useNavigate()
   const [deviceName, setDeviceName] = useState('')
+  const [deviceId, setDeviceId] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
   const [agreeToPrivacy, setAgreeToPrivacy] = useState(false)
 
   useEffect(() => {
-    // Generate device name based on browser info
+    // Generate device name and ID based on browser info
     const userAgent = navigator.userAgent
     let deviceType = 'Mobile'
     
@@ -21,7 +23,10 @@ function Profile() {
     }
     
     const deviceName = `${deviceType} Device`
+    const deviceId = generateDeviceId()
+    
     setDeviceName(deviceName)
+    setDeviceId(deviceId)
   }, [])
 
   const handleNext = () => {
@@ -34,7 +39,6 @@ function Profile() {
 
   const handleConfirm = () => {
     // Save device data
-    const deviceId = generateDeviceId()
     const userData = {
       deviceName,
       deviceId,
@@ -67,18 +71,22 @@ function Profile() {
       }}>
         {/* Profile Icon and Title */}
         <div>
-          <img
+          <ImageWithLoading
             src="/images/hl-1.png"
             alt="Profile Highlight"
             style={{
               width: '100vw',
               height: 'auto',
-              maxHeight: '180px',
-              margin: '0',
+              maxHeight: '220px',
               padding: '0',
               display: 'block',
               objectFit: 'cover',
-              marginLeft: 'calc(-50vw + 50%)'
+              objectPosition: 'top center',
+            }}
+            skeletonStyle={{
+              width: '100vw',
+              height: '220px',
+              borderRadius: '0'
             }}
           />
           <div style={{ padding: '15px', textAlign: 'center' }}>
@@ -152,7 +160,7 @@ function Profile() {
             color: '#6b7280',
             fontFamily: 'monospace'
           }}>
-            Device ID: {deviceName.replace(' ', '_').toLowerCase()}_xxx
+            Device ID: {deviceId}
           </div>
         </div>
         
