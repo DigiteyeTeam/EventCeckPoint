@@ -126,10 +126,16 @@ function Main() {
             {
               onDecodeError: (error) => {
                 // Silently handle decode errors (normal during scanning)
-                console.log('QR decode error:', error)
+                // Only log if it's not a common "not found" error
+                if (!error.includes('No QR code found')) {
+                  console.log('QR decode error:', error)
+                }
               },
               highlightScanRegion: false,
               highlightCodeOutline: false,
+              preferredCamera: 'environment', // Use back camera
+              maxScansPerSecond: 5, // Limit scan frequency to reduce errors
+              returnDetailedScanResult: true // Get more detailed results
             }
           )
           
@@ -151,40 +157,62 @@ function Main() {
     console.log('🔍 QR Code detected:', qrData)
     console.log('📋 Available slugs:', stores.map(s => s.slug))
     
+    // Clean and normalize QR data
+    const cleanData = qrData.trim().toLowerCase()
+    console.log('🧹 Cleaned QR data:', cleanData)
+    
     // More flexible QR code matching
     let store = null
     
     // Try exact slug match first
-    store = stores.find(s => qrData.includes(s.slug))
+    store = stores.find(s => cleanData.includes(s.slug.toLowerCase()))
     if (store) {
       console.log('✅ Exact slug match found:', store.name)
     }
     
-    // If not found, try partial matches with slug
+    // If not found, try partial matches with slug (more flexible)
     if (!store) {
       store = stores.find(s => {
         const slug = s.slug.toLowerCase()
-        const data = qrData.toLowerCase()
-        const match = data.includes(slug) || slug.includes(data)
-        if (match) console.log('✅ Partial slug match found:', store.name)
+        const data = cleanData
+        
+        // Try various matching strategies
+        const strategies = [
+          data.includes(slug),
+          slug.includes(data),
+          data.replace(/[^a-z0-9]/g, '').includes(slug.replace(/[^a-z0-9]/g, '')),
+          slug.replace(/[^a-z0-9]/g, '').includes(data.replace(/[^a-z0-9]/g, ''))
+        ]
+        
+        const match = strategies.some(strategy => strategy)
+        if (match) console.log('✅ Flexible slug match found:', store.name)
         return match
       })
     }
     
-    // If still not found, try store name match
+    // If still not found, try store name match (more flexible)
     if (!store) {
       store = stores.find(s => {
         const name = s.name.toLowerCase()
-        const data = qrData.toLowerCase()
-        const match = data.includes(name) || name.includes(data)
-        if (match) console.log('✅ Store name match found:', store.name)
+        const data = cleanData
+        
+        // Try various matching strategies for store names
+        const strategies = [
+          data.includes(name),
+          name.includes(data),
+          data.replace(/[^a-z0-9]/g, '').includes(name.replace(/[^a-z0-9]/g, '')),
+          name.replace(/[^a-z0-9]/g, '').includes(data.replace(/[^a-z0-9]/g, ''))
+        ]
+        
+        const match = strategies.some(strategy => strategy)
+        if (match) console.log('✅ Flexible store name match found:', store.name)
         return match
       })
     }
     
     // If still not found, try store ID match (for testing)
     if (!store) {
-      const idMatch = qrData.match(/\d+/)
+      const idMatch = cleanData.match(/\d+/)
       if (idMatch) {
         const id = parseInt(idMatch[0])
         store = stores.find(s => s.id === id)
@@ -194,7 +222,7 @@ function Main() {
     
     // If still not found, try any number in QR code as store ID
     if (!store) {
-      const numbers = qrData.match(/\d+/g)
+      const numbers = cleanData.match(/\d+/g)
       if (numbers) {
         for (const num of numbers) {
           const id = parseInt(num)
@@ -206,6 +234,28 @@ function Main() {
             }
           }
         }
+      }
+    }
+    
+    // If still not found, try URL-based matching (for real QR codes)
+    if (!store) {
+      // Extract domain or path from URL
+      try {
+        const url = new URL(qrData)
+        const pathname = url.pathname.toLowerCase()
+        const hostname = url.hostname.toLowerCase()
+        
+        console.log('🌐 URL detected - pathname:', pathname, 'hostname:', hostname)
+        
+        // Try to match with store slug in URL path
+        store = stores.find(s => {
+          const slug = s.slug.toLowerCase()
+          return pathname.includes(slug) || hostname.includes(slug)
+        })
+        
+        if (store) console.log('✅ URL-based match found:', store.name)
+      } catch (e) {
+        // Not a valid URL, continue
       }
     }
     
