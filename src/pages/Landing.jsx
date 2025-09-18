@@ -266,7 +266,7 @@ function Landing() {
           style={{
             width: '90%',
             height: 'auto',
-            maxHeight: '60vh',
+            maxHeight: '56vh',
             objectFit: 'contain',
             display: 'block',
             margin: '0 auto'
@@ -283,7 +283,7 @@ function Landing() {
       {/* Layer 5: Start Button (Front) */}
       <div style={{ 
         position: 'absolute',
-        bottom: '60px',
+        bottom: '90px',
         left: '20px',
         right: '20px',
         zIndex: 5,
