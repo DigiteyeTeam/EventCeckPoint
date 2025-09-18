@@ -18,6 +18,7 @@ function Main() {
   const [stream, setStream] = useState(null)
   const [particlesInit, setParticlesInit] = useState(false)
   const [qrScanner, setQrScanner] = useState(null)
+  const [qrDetected, setQrDetected] = useState(false)
   const videoRef = useRef(null)
 
   // Check if user is registered
@@ -127,8 +128,8 @@ function Main() {
                 // Silently handle decode errors (normal during scanning)
                 console.log('QR decode error:', error)
               },
-              highlightScanRegion: true,
-              highlightCodeOutline: true,
+              highlightScanRegion: false,
+              highlightCodeOutline: false,
             }
           )
           
@@ -147,12 +148,70 @@ function Main() {
   }
 
   const handleQRCodeDetected = (qrData) => {
-    console.log('QR Code data:', qrData)
+    console.log('🔍 QR Code detected:', qrData)
+    console.log('📋 Available slugs:', stores.map(s => s.slug))
     
-    // Check if QR code contains store slug
-    const store = stores.find(s => qrData.includes(s.slug))
+    // More flexible QR code matching
+    let store = null
+    
+    // Try exact slug match first
+    store = stores.find(s => qrData.includes(s.slug))
     if (store) {
-      console.log('Store found:', store.name)
+      console.log('✅ Exact slug match found:', store.name)
+    }
+    
+    // If not found, try partial matches with slug
+    if (!store) {
+      store = stores.find(s => {
+        const slug = s.slug.toLowerCase()
+        const data = qrData.toLowerCase()
+        const match = data.includes(slug) || slug.includes(data)
+        if (match) console.log('✅ Partial slug match found:', store.name)
+        return match
+      })
+    }
+    
+    // If still not found, try store name match
+    if (!store) {
+      store = stores.find(s => {
+        const name = s.name.toLowerCase()
+        const data = qrData.toLowerCase()
+        const match = data.includes(name) || name.includes(data)
+        if (match) console.log('✅ Store name match found:', store.name)
+        return match
+      })
+    }
+    
+    // If still not found, try store ID match (for testing)
+    if (!store) {
+      const idMatch = qrData.match(/\d+/)
+      if (idMatch) {
+        const id = parseInt(idMatch[0])
+        store = stores.find(s => s.id === id)
+        if (store) console.log('✅ Store ID match found:', store.name)
+      }
+    }
+    
+    // If still not found, try any number in QR code as store ID
+    if (!store) {
+      const numbers = qrData.match(/\d+/g)
+      if (numbers) {
+        for (const num of numbers) {
+          const id = parseInt(num)
+          if (id >= 1 && id <= 9) {
+            store = stores.find(s => s.id === id)
+            if (store) {
+              console.log('✅ Number-based match found:', store.name)
+              break
+            }
+          }
+        }
+      }
+    }
+    
+    if (store) {
+      console.log('🎉 Store found:', store.name, 'ID:', store.id, 'Slug:', store.slug)
+      
       // Stop scanner
       if (qrScanner) {
         qrScanner.stop()
@@ -169,10 +228,15 @@ function Main() {
       
       // Navigate to checkin page
       const checkinUrl = `/checkin/${store.slug}`
+      console.log('🚀 Navigating to:', checkinUrl)
       navigate(checkinUrl)
     } else {
-      console.log('Store not found for QR data:', qrData)
-      alert('QR Code ไม่ถูกต้อง กรุณาสแกน QR Code ที่ถูกต้อง')
+      console.log('❌ Store not found for QR data:', qrData)
+      console.log('🔄 Continuing to scan...')
+      
+      // Show a brief visual feedback that QR was detected but not recognized
+      setQrDetected(true)
+      setTimeout(() => setQrDetected(false), 1000)
     }
   }
 
@@ -281,6 +345,7 @@ function Main() {
       setStream(null)
     }
     setShowCamera(false)
+    setQrDetected(false)
   }
 
   const handleLogout = () => {
@@ -772,79 +837,117 @@ function Main() {
               muted
             />
 
-            {/* Scanning Overlay */}
+            {/* Modern Scanning Overlay - Light Theme */}
             <div style={{
               position: 'absolute',
-              top: '20%',
-              left: '20%',
-              right: '20%',
-              bottom: '20%',
-              border: '2px solid #dc2626',
-              borderRadius: '15px',
+              top: '15%',
+              left: '15%',
+              right: '15%',
+              bottom: '15%',
+              border: '2px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '25px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              boxShadow: '0 0 20px rgba(255, 255, 255, 0.2)',
+              animation: 'scanningPulse 2s ease-in-out infinite alternate'
             }}>
-              <div style={{
-                width: '80%',
-                height: '80%',
-                border: '2px dashed #dc2626',
-                borderRadius: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(220, 38, 38, 0.1)'
-              }}>
-                <QrCode style={{ 
-                  color: '#dc2626', 
-                  width: '60px', 
-                  height: '60px',
-                  opacity: 0.7
-                }} />
-              </div>
+              <QrCode style={{ 
+                color: 'rgba(255, 255, 255, 0.6)', 
+                width: '70px', 
+                height: '70px',
+                opacity: 0.8,
+                filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))',
+                animation: 'qrCodeGlow 1.5s ease-in-out infinite alternate'
+              }} />
             </div>
 
-            {/* Corner Brackets */}
+            {/* Enhanced Corner Brackets with Light Glow */}
             <div style={{
               position: 'absolute',
-              top: '20%',
-              left: '20%',
-              width: '30px',
-              height: '30px',
-              borderTop: '3px solid #dc2626',
-              borderLeft: '3px solid #dc2626',
-              borderTopLeftRadius: '10px'
+              top: '15%',
+              left: '15%',
+              width: '40px',
+              height: '40px',
+              borderTop: '4px solid rgba(255, 255, 255, 0.5)',
+              borderLeft: '4px solid rgba(255, 255, 255, 0.5)',
+              borderTopLeftRadius: '15px',
+              boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
+              animation: 'cornerGlow 2s ease-in-out infinite alternate'
             }} />
             <div style={{
               position: 'absolute',
-              top: '20%',
-              right: '20%',
-              width: '30px',
-              height: '30px',
-              borderTop: '3px solid #dc2626',
-              borderRight: '3px solid #dc2626',
-              borderTopRightRadius: '10px'
+              top: '15%',
+              right: '15%',
+              width: '40px',
+              height: '40px',
+              borderTop: '4px solid rgba(255, 255, 255, 0.5)',
+              borderRight: '4px solid rgba(255, 255, 255, 0.5)',
+              borderTopRightRadius: '15px',
+              boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
+              animation: 'cornerGlow 2s ease-in-out infinite alternate 0.5s'
             }} />
             <div style={{
               position: 'absolute',
-              bottom: '20%',
-              left: '20%',
-              width: '30px',
-              height: '30px',
-              borderBottom: '3px solid #dc2626',
-              borderLeft: '3px solid #dc2626',
-              borderBottomLeftRadius: '10px'
+              bottom: '15%',
+              left: '15%',
+              width: '40px',
+              height: '40px',
+              borderBottom: '4px solid rgba(255, 255, 255, 0.5)',
+              borderLeft: '4px solid rgba(255, 255, 255, 0.5)',
+              borderBottomLeftRadius: '15px',
+              boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
+              animation: 'cornerGlow 2s ease-in-out infinite alternate 1s'
             }} />
             <div style={{
               position: 'absolute',
-              bottom: '20%',
-              right: '20%',
-              width: '30px',
-              height: '30px',
-              borderBottom: '3px solid #dc2626',
-              borderRight: '3px solid #dc2626',
-              borderBottomRightRadius: '10px'
+              bottom: '15%',
+              right: '15%',
+              width: '40px',
+              height: '40px',
+              borderBottom: '4px solid rgba(255, 255, 255, 0.5)',
+              borderRight: '4px solid rgba(255, 255, 255, 0.5)',
+              borderBottomRightRadius: '15px',
+              boxShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
+              animation: 'cornerGlow 2s ease-in-out infinite alternate 1.5s'
             }} />
+
+            {/* Scanning Instructions */}
+            <div style={{
+              position: 'absolute',
+              bottom: '10%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              color: qrDetected ? 'rgba(255, 100, 100, 0.9)' : 'rgba(255, 255, 255, 0.8)',
+              fontSize: '16px',
+              fontWeight: '600',
+              textAlign: 'center',
+              textShadow: qrDetected ? '0 0 10px rgba(255, 100, 100, 0.8)' : '0 0 10px rgba(255, 255, 255, 0.6)',
+              animation: qrDetected ? 'none' : 'textPulse 2s ease-in-out infinite alternate',
+              transition: 'all 0.3s ease'
+            }}>
+              {qrDetected ? 'QR Code ไม่ถูกต้อง' : 'สแกน QR Code'}
+            </div>
+
+            {/* QR Code Instructions */}
+            <div style={{
+              position: 'absolute',
+              top: '2%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontSize: '12px',
+              fontWeight: '200',
+              textAlign: 'center',
+              backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              padding: '5px 16px',
+              borderRadius: '10px',
+              maxWidth: '90%',
+              lineHeight: '1.4'
+            }}>
+              หา QR Code ที่ตั้งอยู่หน้าร้านร่วมรายการ
+            </div>
+
           </div>
         </div>
       )}
