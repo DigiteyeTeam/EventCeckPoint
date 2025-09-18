@@ -28,114 +28,70 @@ function Landing() {
     console.log('Landing: User not registered, showing landing page')
   }, [navigate])
 
-  // Simplified GSAP Effects (Lightweight)
+  // Minimal GSAP Effects (Ultra Lightweight)
   useEffect(() => {
     if (!isLoading) {
-      // Simple spotlight pulse (reduced intensity)
-      gsap.to(spotlightRef.current, {
-        scale: 1.1,
-        opacity: 0.6,
-        duration: 3,
-        ease: "power2.inOut",
-        yoyo: true,
-        repeat: -1
-      })
-
-      // Slower rotating rays
-      gsap.to(raysRef.current, {
-        rotation: 360,
-        duration: 30,
-        ease: "none",
-        repeat: -1
-      })
-
-      // Reduced particles animation
-      particlesRef.current.forEach((particle, index) => {
-        gsap.to(particle, {
-          y: -15,
-          x: Math.random() * 10 - 5,
-          opacity: 0.5,
-          scale: 1.1,
-          duration: 4 + Math.random() * 2,
+      try {
+        // Very simple spotlight pulse
+        gsap.to(spotlightRef.current, {
+          scale: 1.05,
+          opacity: 0.4,
+          duration: 4,
           ease: "power2.inOut",
           yoyo: true,
-          repeat: -1,
-          delay: index * 0.2
+          repeat: -1
         })
-      })
 
-      // Gentle top start image animation
-      gsap.to(topStartRef.current, {
-        y: -5,
-        rotation: 0.5,
-        duration: 4,
-        ease: "power2.inOut",
-        yoyo: true,
-        repeat: -1
-      })
-    }
-  }, [isLoading])
+        // Very slow rotating rays
+        gsap.to(raysRef.current, {
+          rotation: 360,
+          duration: 60,
+          ease: "none",
+          repeat: -1
+        })
 
-  // Handle zoom and resize events
-  useEffect(() => {
-    const handleResize = () => {
-      // Kill all GSAP animations on resize/zoom
-      gsap.killTweensOf([spotlightRef.current, raysRef.current, particlesRef.current, topStartRef.current])
-      
-      // Restart animations after a short delay
-      setTimeout(() => {
-        if (!isLoading) {
-          // Restart simplified animations
-          gsap.to(spotlightRef.current, {
-            scale: 1.1,
-            opacity: 0.6,
-            duration: 3,
-            ease: "power2.inOut",
-            yoyo: true,
-            repeat: -1
-          })
-
-          gsap.to(raysRef.current, {
-            rotation: 360,
-            duration: 30,
-            ease: "none",
-            repeat: -1
-          })
-
-          particlesRef.current.forEach((particle, index) => {
+        // Minimal particles animation (only 10 particles)
+        particlesRef.current.slice(0, 10).forEach((particle, index) => {
+          if (particle) {
             gsap.to(particle, {
-              y: -15,
-              x: Math.random() * 10 - 5,
-              opacity: 0.5,
-              scale: 1.1,
-              duration: 4 + Math.random() * 2,
+              y: -10,
+              x: Math.random() * 5 - 2.5,
+              opacity: 0.3,
+              scale: 1.05,
+              duration: 6 + Math.random() * 2,
               ease: "power2.inOut",
               yoyo: true,
               repeat: -1,
-              delay: index * 0.2
+              delay: index * 0.5
             })
-          })
+          }
+        })
 
-          gsap.to(topStartRef.current, {
-            y: -5,
-            rotation: 0.5,
-            duration: 4,
-            ease: "power2.inOut",
-            yoyo: true,
-            repeat: -1
-          })
-        }
-      }, 100)
-    }
-
-    window.addEventListener('resize', handleResize)
-    window.addEventListener('orientationchange', handleResize)
-    
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('orientationchange', handleResize)
+        // Very gentle top start image animation
+        gsap.to(topStartRef.current, {
+          y: -3,
+          rotation: 0.2,
+          duration: 6,
+          ease: "power2.inOut",
+          yoyo: true,
+          repeat: -1
+        })
+      } catch (error) {
+        console.error('GSAP animation error:', error)
+      }
     }
   }, [isLoading])
+
+  // Cleanup animations on unmount
+  useEffect(() => {
+    return () => {
+      try {
+        gsap.killTweensOf([spotlightRef.current, raysRef.current, particlesRef.current, topStartRef.current])
+      } catch (error) {
+        console.error('GSAP cleanup error:', error)
+      }
+    }
+  }, [])
 
   const handleLoadingComplete = () => {
     setIsLoading(false)
@@ -187,7 +143,7 @@ function Landing() {
           pointerEvents: 'none'
         }}
       >
-        {[...Array(360)].map((_, i) => (
+        {[...Array(72)].map((_, i) => (
           <div
             key={i}
             style={{
@@ -198,7 +154,7 @@ function Landing() {
               height: '750px',
               background: 'linear-gradient(to bottom, rgba(255,165,0,0.5) 0%, rgba(255,140,0,0.4) 20%, rgba(255,69,0,0.25) 50%, rgba(255,20,147,0.08) 80%, transparent 100%)',
               transformOrigin: '50% 0%',
-              transform: `translate(-50%, -50%) rotate(${i}deg)`,
+              transform: `translate(-50%, -50%) rotate(${i * 5}deg)`,
               opacity: 0.4,
               boxShadow: '0 0 8px rgba(255,165,0,0.3), 0 0 15px rgba(255,140,0,0.15)'
             }}
@@ -207,7 +163,7 @@ function Landing() {
       </div>
 
       {/* GSAP Floating Particles - In front of bg-start.png */}
-      {[...Array(30)].map((_, i) => (
+      {[...Array(10)].map((_, i) => (
         <div
           key={i}
           ref={el => particlesRef.current[i] = el}
