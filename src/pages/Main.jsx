@@ -69,11 +69,17 @@ function Main() {
     window.addEventListener('focus', handleStorageChange)
 
     // Initialize particles
-    loadBasic().then(() => {
-      setParticlesInit(true)
-    }).catch((error) => {
-      console.error('Particles initialization failed:', error)
-    })
+    try {
+      loadBasic().then(() => {
+        setParticlesInit(true)
+      }).catch((error) => {
+        console.error('Particles initialization failed:', error)
+        setParticlesInit(false)
+      })
+    } catch (error) {
+      console.error('Particles load error:', error)
+      setParticlesInit(false)
+    }
 
     return () => {
       window.removeEventListener('storage', handleStorageChange)
@@ -94,10 +100,12 @@ function Main() {
   }, [checkedInStores])
 
   const handleMapClick = (store) => {
+    console.log('Map clicked!', store)
     navigate(`/store/${store.id}`)
   }
 
   const handleScanClick = async () => {
+    console.log('Scan clicked!')
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'environment' } 
@@ -341,132 +349,11 @@ function Main() {
         />
       )}
       
-      {/* Black Background for Car Animation */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 1, 0] }}
-        transition={{
-          duration: 1.5,
-          times: [0, 0.1, 0.9, 1]
-        }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#000000',
-          zIndex: 999
-        }}
-      />
-
-      {/* Car Animation */}
-      <motion.div
-        initial={{ x: '100vw', opacity: 0 }}
-        animate={{ 
-          x: '-100vw', 
-          opacity: [0, 1, 1, 0]
-        }}
-        transition={{
-          duration: 1.5, // Faster car movement
-          ease: "easeInOut",
-          opacity: {
-            times: [0, 0.1, 0.9, 1],
-            duration: 1.5
-          }
-        }}
-        style={{
-          position: 'absolute',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 1000,
-          pointerEvents: 'none'
-        }}
-      >
-        {/* Car Image */}
-        <img 
-          src="/images/carOpen.png" 
-          alt="Car"
-          style={{
-            width: '80vw',
-            height: 'auto',
-            filter: 'drop-shadow(0 0 50px rgba(255, 255, 255, 0.9))'
-          }}
-        />
-        
-            {/* Speed Lines Effect */}
-            <motion.div
-              animate={{
-                x: [0, -150, -300],
-                opacity: [0, 1, 0]
-              }}
-              transition={{
-                duration: 0.2, // Faster speed lines
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '-300px',
-                transform: 'translateY(-50%)',
-                width: '300px',
-                height: '6px',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent)',
-                borderRadius: '3px'
-              }}
-            />
-        
-            {/* Wind Effect */}
-            <motion.div
-              animate={{
-                scaleX: [1, 2.5, 1],
-                opacity: [0.3, 0.8, 0.3]
-              }}
-              transition={{
-                duration: 0.15, // Faster wind effect
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              style={{
-                position: 'absolute',
-                top: '10%',
-                left: '-200px',
-                width: '200px',
-                height: '80%',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                borderRadius: '50%',
-                transform: 'skewX(-25deg)'
-              }}
-            />
-        
-            {/* Fire Effect */}
-            <motion.div
-              animate={{
-                scale: [1, 2, 1],
-                opacity: [0.8, 1, 0.8]
-              }}
-              transition={{
-                duration: 0.1, // Faster fire effect
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              style={{
-                position: 'absolute',
-                top: '55%',
-                left: '-80px',
-                width: '80px',
-                height: '50px',
-                background: 'radial-gradient(circle, rgba(255, 100, 0, 0.9), rgba(255, 200, 0, 0.6), transparent)',
-                borderRadius: '50%'
-              }}
-            />
-      </motion.div>
           {/* Header */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.8, duration: 0.8 }} // Faster header appearance
+            transition={{ delay: 0.5, duration: 0.8 }} // Header appearance
             style={{ 
               padding: '5px',
               textAlign: 'center',
@@ -504,7 +391,7 @@ function Main() {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2.0, duration: 0.8 }} // Faster roadmap appearance
+            transition={{ delay: 0.7, duration: 0.8 }} // Roadmap appearance
             style={{ 
               height: '114vh',
               width: '100%',
@@ -518,12 +405,12 @@ function Main() {
           minScale={0.3}
           maxScale={3}
           centerOnInit={true}
-          wheel={{ step: 0.1 }}
-          pinch={{ step: 5 }}
+          wheel={{ disabled: true }}
+          pinch={{ disabled: true }}
           doubleClick={{ disabled: true }}
           panning={{ 
-            disabled: false,
-            velocityDisabled: false,
+            disabled: true,
+            velocityDisabled: true,
             lockAxisX: true,
             lockAxisY: false
           }}
@@ -616,12 +503,19 @@ function Main() {
                   }}>
                         {/* Map Pin */}
                         <motion.button
-                          onClick={() => handleMapClick(store)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            console.log('Map clicked!', store)
+                            handleMapClick(store)
+                          }}
                           style={{
                             background: 'none',
                             border: 'none',
                             cursor: 'pointer',
-                            padding: '0px'
+                            padding: '0px',
+                            zIndex: 1001,
+                            position: 'relative'
                           }}
                           whileHover={{ 
                             scale: 1.2,
@@ -658,11 +552,7 @@ function Main() {
                         style={{
                           width: '100px',
                           height: '120px',
-                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-                          '@media (min-width: 768px)': {
-                            width: '150px',
-                            height: '180px'
-                          }
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
                         }}
                         skeletonStyle={{
                           width: '100px',
@@ -683,11 +573,7 @@ function Main() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        cursor: 'default',
-                        '@media (min-width: 768px)': {
-                          width: '180px',
-                          height: '180px'
-                        }
+                        cursor: 'default'
                       }}
                       whileHover={{ 
                         scale: 1.05,
@@ -741,11 +627,7 @@ function Main() {
                         margin: '5px 0 0 0',
                         textAlign: 'center',
                         textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                        maxWidth: '80px',
-                        '@media (min-width: 768px)': {
-                          fontSize: '16px',
-                          maxWidth: '120px'
-                        }
+                        maxWidth: '80px'
                       }}>
                         {store.name}
                       </p>
@@ -903,7 +785,7 @@ function Main() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ 
-              delay: 2.5, // หลังรถวิ่งผ่าน (1.5s) + หน่วงเวลา 1s
+              delay: 1.0, // Bottom navigation appearance
               duration: 0.8,
               type: "spring",
               stiffness: 200,
@@ -937,7 +819,12 @@ function Main() {
             }}>
             {/* Home Button */}
             <motion.button
-              onClick={() => navigate('/main')}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                console.log('Home clicked!')
+                navigate('/main')
+              }}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -948,7 +835,9 @@ function Main() {
                 cursor: 'pointer',
                 padding: '8px',
                 marginBottom: '-10px',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                zIndex: 1002,
+                position: 'relative'
               }}
               whileHover={{ 
                 scale: 1.1,
@@ -984,7 +873,12 @@ function Main() {
               transform: 'translateY(-8px)'
             }}>
               <button
-                onClick={handleScanClick}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  console.log('Scan clicked!')
+                  handleScanClick()
+                }}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -1000,7 +894,8 @@ function Main() {
                   boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
                   transition: 'all 0.3s ease',
                   position: 'relative',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  zIndex: 1003
                 }}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'scale(1.1)'
@@ -1043,7 +938,10 @@ function Main() {
 
             {/* Coupon Button */}
             <motion.button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                console.log('Coupon clicked!', checkedInStores.length)
                 if (checkedInStores.length === 9) {
                   navigate('/coupon')
                 }
@@ -1059,7 +957,9 @@ function Main() {
                 cursor: checkedInStores.length === 9 ? 'pointer' : 'not-allowed',
                 padding: '8px',
                 marginBottom: '-10px',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                zIndex: 1002,
+                position: 'relative'
               }}
               whileHover={checkedInStores.length === 9 ? { 
                 scale: 1.1,
