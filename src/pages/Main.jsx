@@ -592,10 +592,8 @@ function Main() {
               {/* Store Points */}
               {stores.map((store, index) => {
                 const isCheckedIn = checkedInStores.includes(store.id)
-                console.log(`Store ${store.name} (ID: ${store.id}) - isCheckedIn: ${isCheckedIn}, checkedInStores:`, checkedInStores) // Debug log
-                console.log(`Image paths - Normal: ${store.image}, Black: ${store.imageBlack}`) // Debug log
                 const positions = [
-                  { top: '-20vh', left: '25%' },   // Colonel Gold Fang
+                  { top: '-28vh', left: '15%' },   // Colonel Gold Fang
                   { top: '5vh', right: '15%' },  // Greenie & Elfie
                   { top: '20vh', left: '5%' },   // Splash
                   { top: '45vh', right: '20%' },  // Kongrit
