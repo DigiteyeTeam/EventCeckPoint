@@ -29,7 +29,8 @@ body {
   width: 100%;
 }
 
-/* Mobile-only CSS guard */
+/* Mobile-only CSS guard - Disabled to prevent white overlay issue */
+/* 
 @media (orientation: landscape) and (min-width: 768px) {
   body::before {
     content: "This app is designed for mobile portrait mode only. Please rotate your device or use a mobile device.";
@@ -47,5 +48,16 @@ body {
     text-align: center;
     padding: 20px;
     font-size: 18px;
+  }
+}
+*/
+
+/* Glow Animation for Header */
+@keyframes glowPulse {
+  0% {
+    filter: drop-shadow(0 0 3px rgba(255, 165, 0, 0.4)) drop-shadow(0 0 6px rgba(255, 200, 100, 0.3)) drop-shadow(0 0 9px rgba(255, 255, 200, 0.2));
+  }
+  100% {
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.6)) drop-shadow(0 0 10px rgba(255, 200, 100, 0.5)) drop-shadow(0 0 15px rgba(255, 255, 200, 0.4));
   }
 }

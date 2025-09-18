@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { QrCode, Home, MapPin, X, Ticket } from 'lucide-react'
 import { getUserData, clearAllData } from '../utils/storage'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
@@ -10,6 +10,7 @@ import ImageWithLoading from '../components/ImageWithLoading'
 
 function Main() {
   const navigate = useNavigate()
+  const location = useLocation()
   const userData = getUserData()
   const [checkedInStores, setCheckedInStores] = useState([])
   const [showCamera, setShowCamera] = useState(false)
@@ -640,8 +641,8 @@ function Main() {
         </TransformWrapper>
       </motion.div>
 
-      {/* Camera Popup */}
-      {showCamera && (
+      {/* Camera Popup - Only show in Main page */}
+      {showCamera && location.pathname === '/main' && (
         <div style={{
           position: 'fixed',
           top: '50%',

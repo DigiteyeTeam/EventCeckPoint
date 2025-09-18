@@ -18,9 +18,8 @@ function Profile() {
     
     if (userAgent.includes('iPad') || userAgent.includes('Tablet')) {
       deviceType = 'Tablet'
-    } else if (userAgent.includes('Windows') || userAgent.includes('Mac')) {
-      deviceType = 'Desktop'
     }
+    // Remove Desktop detection - only show Mobile or Tablet
     
     const deviceName = `${deviceType} Device`
     const deviceId = generateDeviceId()

@@ -28,51 +28,112 @@ function Landing() {
     console.log('Landing: User not registered, showing landing page')
   }, [navigate])
 
-  // GSAP Spotlight Effects
+  // Simplified GSAP Effects (Lightweight)
   useEffect(() => {
     if (!isLoading) {
-      // Spotlight pulse animation
+      // Simple spotlight pulse (reduced intensity)
       gsap.to(spotlightRef.current, {
-        scale: 1.2,
-        opacity: 0.9,
-        duration: 2,
-        ease: "power2.inOut",
-        yoyo: true,
-        repeat: -1
-      })
-
-      // Rotating rays animation
-      gsap.to(raysRef.current, {
-        rotation: 360,
-        duration: 20,
-        ease: "none",
-        repeat: -1
-      })
-
-      // Particles floating animation
-      particlesRef.current.forEach((particle, index) => {
-        gsap.to(particle, {
-          y: -30,
-          x: Math.random() * 20 - 10,
-          opacity: 0.8,
-          scale: 1.2,
-          duration: 3 + Math.random() * 2,
-          ease: "power2.inOut",
-          yoyo: true,
-          repeat: -1,
-          delay: index * 0.1
-        })
-      })
-
-      // Top Start Image floating animation
-      gsap.to(topStartRef.current, {
-        y: -10,
-        rotation: 1,
+        scale: 1.1,
+        opacity: 0.6,
         duration: 3,
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1
       })
+
+      // Slower rotating rays
+      gsap.to(raysRef.current, {
+        rotation: 360,
+        duration: 30,
+        ease: "none",
+        repeat: -1
+      })
+
+      // Reduced particles animation
+      particlesRef.current.forEach((particle, index) => {
+        gsap.to(particle, {
+          y: -15,
+          x: Math.random() * 10 - 5,
+          opacity: 0.5,
+          scale: 1.1,
+          duration: 4 + Math.random() * 2,
+          ease: "power2.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: index * 0.2
+        })
+      })
+
+      // Gentle top start image animation
+      gsap.to(topStartRef.current, {
+        y: -5,
+        rotation: 0.5,
+        duration: 4,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1
+      })
+    }
+  }, [isLoading])
+
+  // Handle zoom and resize events
+  useEffect(() => {
+    const handleResize = () => {
+      // Kill all GSAP animations on resize/zoom
+      gsap.killTweensOf([spotlightRef.current, raysRef.current, particlesRef.current, topStartRef.current])
+      
+      // Restart animations after a short delay
+      setTimeout(() => {
+        if (!isLoading) {
+          // Restart simplified animations
+          gsap.to(spotlightRef.current, {
+            scale: 1.1,
+            opacity: 0.6,
+            duration: 3,
+            ease: "power2.inOut",
+            yoyo: true,
+            repeat: -1
+          })
+
+          gsap.to(raysRef.current, {
+            rotation: 360,
+            duration: 30,
+            ease: "none",
+            repeat: -1
+          })
+
+          particlesRef.current.forEach((particle, index) => {
+            gsap.to(particle, {
+              y: -15,
+              x: Math.random() * 10 - 5,
+              opacity: 0.5,
+              scale: 1.1,
+              duration: 4 + Math.random() * 2,
+              ease: "power2.inOut",
+              yoyo: true,
+              repeat: -1,
+              delay: index * 0.2
+            })
+          })
+
+          gsap.to(topStartRef.current, {
+            y: -5,
+            rotation: 0.5,
+            duration: 4,
+            ease: "power2.inOut",
+            yoyo: true,
+            repeat: -1
+          })
+        }
+      }, 100)
+    }
+
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('orientationchange', handleResize)
+    
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleResize)
     }
   }, [isLoading])
 
@@ -210,7 +271,9 @@ function Landing() {
             maxHeight: '24vh',
             objectFit: 'contain',
             display: 'block',
-            margin: '0 auto'
+            margin: '0 auto',
+            filter: 'drop-shadow(0 0 3px rgba(255, 165, 0, 0.4)) drop-shadow(0 0 6px rgba(255, 200, 100, 0.3)) drop-shadow(0 0 9px rgba(255, 255, 200, 0.2))',
+            animation: 'glowPulse 3s ease-in-out infinite alternate'
           }}
         />
       </div>
@@ -243,7 +306,7 @@ function Landing() {
         {/* Body Content Image (body-start.png) - Responsive */}
         <ImageWithLoading
           src="/images/body-start.png" 
-          alt=""
+          alt="Event Background"
           style={{
             width: '90%',
             height: 'auto',
@@ -260,57 +323,6 @@ function Landing() {
         />
       </div>
       
-        {/* Layer 3: Logo and App Name */}
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 4,
-          textAlign: 'center',
-          animation: 'slideUp 0.8s ease-out 0.4s both'
-        }}>
-          <ImageWithLoading
-            src="/images/logo-app.png" 
-            alt=""
-            style={{
-              maxWidth: '300px',
-              width: '100%',
-              height: 'auto'
-            }}
-            skeletonStyle={{
-              width: '300px',
-              height: '150px',
-              borderRadius: '8px'
-            }}
-          />
-        </div>
-        
-        {/* Layer 4: Artists Text */}
-        <div style={{
-          position: 'absolute',
-          top: '20%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 3,
-          textAlign: 'center',
-          animation: 'slideUp 0.6s ease-out 0.2s both'
-        }}>
-          <ImageWithLoading
-            src="/images/artists-text.png" 
-            alt=""
-          style={{
-            maxWidth: '250px',
-            width: '100%',
-            height: 'auto'
-          }}
-          skeletonStyle={{
-            width: '250px',
-            height: '80px',
-            borderRadius: '8px'
-          }}
-          />
-        </div>
       
       {/* Layer 5: Start Button (Front) */}
       <div style={{ 
