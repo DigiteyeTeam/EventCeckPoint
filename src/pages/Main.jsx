@@ -19,6 +19,7 @@ function Main() {
   const [particlesInit, setParticlesInit] = useState(false)
   const [qrScanner, setQrScanner] = useState(null)
   const [qrDetected, setQrDetected] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   const videoRef = useRef(null)
 
   // Check if user is registered
@@ -136,7 +137,7 @@ function Main() {
               highlightScanRegion: false,
               highlightCodeOutline: false,
               preferredCamera: 'environment', // Use back camera
-              maxScansPerSecond: 5, // Limit scan frequency to reduce errors
+              maxScansPerSecond: 1, // Limit scan frequency to reduce errors
               returnDetailedScanResult: true // Get more detailed results
             }
           )
@@ -156,6 +157,13 @@ function Main() {
   }
 
   const handleQRCodeDetected = async (qrData) => {
+    // Prevent multiple processing of the same QR code
+    if (isProcessing) {
+      return
+    }
+    
+    setIsProcessing(true)
+    
     // Clean and normalize QR data
     const cleanData = qrData.trim().toLowerCase()
     
@@ -285,7 +293,7 @@ function Main() {
     }
     
     if (store) {
-      // Stop scanner
+      // Stop scanner immediately
       if (qrScanner) {
         qrScanner.stop()
         qrScanner.destroy()
@@ -305,7 +313,10 @@ function Main() {
     } else {
       // Show a brief visual feedback that QR was detected but not recognized
       setQrDetected(true)
-      setTimeout(() => setQrDetected(false), 1000)
+      setTimeout(() => {
+        setQrDetected(false)
+        setIsProcessing(false) // Reset processing state
+      }, 1000)
     }
   }
 
@@ -415,6 +426,7 @@ function Main() {
     }
     setShowCamera(false)
     setQrDetected(false)
+    setIsProcessing(false) // Reset processing state when closing camera
   }
 
   const handleLogout = () => {
