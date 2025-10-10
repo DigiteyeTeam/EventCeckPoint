@@ -22,155 +22,155 @@ function StoreDetail() {
     {
       id: 1,
       name: 'Colonel Gold Fang',
-      storeName: 'Dough Bros. Pizza & Doughnuts',
+      storeName: 'Start Gaysorn Amarin',
       image: '/images/point-cars/Colonel Gold Fang.png',
-      storeImage: '/images/restaurant/r1.png',
-      logo: '/images/restaurant-logo/l1.png',
+      storeImage: '/images/restaurant/start.png',
+      logo: '/images/restaurant-logo/lstart.png',
       location: {
-        floor: 'Interchange 21 Room 104 G. Floor',
-        address: '399 Sukhumvit Rd. Khlong Toei Neua',
-        district: 'Wattana, Bangkok',
-        postalCode: '10110'
+        floor: 'G Floor',
+        address: '502 ถนน เพลินจิต แขวงลุมพินี',
+        district: 'เขตปทุมวัน กรุงเทพมหานคร',
+        postalCode: '10330'
       },
-      hours: '11:00–2:00',
-      phone: '083 778 2536',
-      mapLink: 'https://maps.app.goo.gl/swtgj2HKEG8jBRti8'
+      hours: '10:00–21:00',
+      phone: '026504703',
+      mapLink: 'https://maps.app.goo.gl/TH8DSRpoDUbcBpQr7'
     },
     {
       id: 2,
       name: 'Greenie & Elfie',
-      storeName: "Mickey's Diner BKK",
+      storeName: "Dough Bros. Pizza & Doughnuts",
       image: '/images/point-cars/Greenie & Elfie.png',
-      storeImage: '/images/restaurant/r2.png',
-      logo: '/images/restaurant-logo/l2.png',
+      storeImage: '/images/restaurant/r1.png',
+      logo: '/images/restaurant-logo/l1.png',
       location: {
-        floor: 'GF Floor, Amarin Plaza',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
+        floor: 'G Floor',
+        address: 'เกษรอัมรินทร์ ถนน เพลินจิต แขวงลุมพินี  10330',
         district: 'เขตปทุมวัน กรุงเทพมหานคร',
         postalCode: '10330'
       },
-      hours: '8:00–23:00',
-      phone: '090 499 5158',
-      mapLink: 'https://maps.app.goo.gl/BvNV1PHRYoScZVHj9'
+      hours: '10:00–0:00',
+      phone: '0909232871',
+      mapLink: 'https://maps.app.goo.gl/CrAcngF7JzYNifYQ8'
     },
     {
       id: 3,
       name: 'Splash',
-      storeName: 'Villa Market - Gaysorn Amarin',
+      storeName: 'NICO NICO',
       image: '/images/point-cars/Splash.png',
-      storeImage: '/images/restaurant/r3.png',
-      logo: '/images/restaurant-logo/l3.png',
+      storeImage: '/images/restaurant/r2.jpg',
+      logo: '/images/restaurant-logo/l2.png',
       location: {
-        floor: 'Unit A, 5th Floor 502',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
-        district: 'เขตปทุมวัน กรุงเทพมหานคร',
-        postalCode: '10330'
-      },
-      hours: '9:00–21:00',
-      phone: '02 502 7389',
-      mapLink: 'https://maps.app.goo.gl/W88CtzsNZeAAZFLA6'
-    },
-    {
-      id: 4,
-      name: 'Kongrit',
-      storeName: 'NICO NICO - Gaysorn Amarin',
-      image: '/images/point-cars/Kongrit.png',
-      storeImage: '/images/restaurant/r4.png',
-      logo: '/images/restaurant-logo/l4.png',
-      location: {
-        floor: 'ตึก Gaysorn Amarin (ชั้น2 496 502',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
+        floor: '2 Floor',
+        address: '496 502 ถนน เพลินจิต แขวงลุมพินี',
         district: 'เขตปทุมวัน กรุงเทพมหานคร',
         postalCode: '10330'
       },
       hours: '7:30–0:00',
-      phone: '065 846 8633',
-      mapLink: 'https://maps.app.goo.gl/e1Cy8iCXHPXo1pog9'
+      phone: '0658468633',
+      mapLink: 'https://maps.app.goo.gl/3RhMJPaBrvEJjizX6'
     },
     {
-      id: 5,
-      name: 'Ai-Sam-Ta',
+      id: 4,
+      name: 'Kongrit',
       storeName: 'Raynue',
-      image: '/images/point-cars/Ai-Sam-Ta.png',
-      storeImage: '/images/restaurant/r5.png',
-      logo: '/images/restaurant-logo/l5.png',
+      image: '/images/point-cars/Kongrit.png',
+      storeImage: '/images/restaurant/r3.png',
+      logo: '/images/restaurant-logo/l3.png',
       location: {
-        floor: '3rd Floor, Gaysorn Amarin, 502',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
+        floor: '3 Floor',
+        address: '502 ถนน เพลินจิต แขวงลุมพินี',
         district: 'เขตปทุมวัน กรุงเทพมหานคร',
         postalCode: '10330'
       },
       hours: '8:00–0:00',
-      phone: '092 976 6995',
-      mapLink: 'https://maps.app.goo.gl/fWDpCrXSph6RKT779'
+      phone: '0929766995',
+      mapLink: 'https://maps.app.goo.gl/o3jAUDi9qbQdKzLn7'
     },
     {
-      id: 6,
-      name: 'Qtako',
-      storeName: 'ToroTora',
-      image: '/images/point-cars/Qtako.png',
-      storeImage: '/images/restaurant/r6.png',
-      logo: '/images/restaurant-logo/l6.png',
-      location: {
-        floor: '3rd Floor, Gaysorn Amarin',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
-        district: 'เขตปทุมวัน กรุงเทพมหานคร',
-        postalCode: '10330'
-      },
-      hours: '17:00–23:00',
-      phone: '065 547 6888',
-      mapLink: 'https://maps.app.goo.gl/yYv1v8YqwTohfY4U6'
-    },
-    {
-      id: 7,
-      name: 'Dylie',
-      storeName: 'Brewave Gaysorn Amarin',
-      image: '/images/point-cars/Dylie.png',
-      storeImage: '/images/restaurant/r7.png',
-      logo: '/images/restaurant-logo/l7.png',
-      location: {
-        floor: '4th Floor Gaysorn Amarin Tower',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
-        district: 'เขตปทุมวัน กรุงเทพมหานคร',
-        postalCode: '10330'
-      },
-      hours: '11:00–0:00',
-      phone: '063 938 7929',
-      mapLink: 'https://maps.app.goo.gl/8cmZYMrFsP5rNWQo8'
-    },
-    {
-      id: 8,
-      name: 'Korn Doll',
+      id: 5,
+      name: 'Ai-Sam-Ta',
       storeName: 'Jiaozi Jiuba',
-      image: '/images/point-cars/Korn Doll.png',
-      storeImage: '/images/restaurant/r8.png',
-      logo: '/images/restaurant-logo/l8.png',
+      image: '/images/point-cars/Ai-Sam-Ta.png',
+      storeImage: '/images/restaurant/r4.png',
+      logo: '/images/restaurant-logo/l4.png',
       location: {
-        floor: '4 Floor, 496 502',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
+        floor: '4 Floor',
+        address: '496 502 ถนน เพลินจิต แขวงลุมพินี',
         district: 'เขตปทุมวัน กรุงเทพมหานคร',
         postalCode: '10330'
       },
       hours: '11:00–21:00',
-      phone: '080 835 7504',
-      mapLink: 'https://maps.app.goo.gl/x3uJkfpSoja8uPxs9'
+      phone: '0808357504',
+      mapLink: 'https://maps.app.goo.gl/AVmFwZvWNNaDTBHo9'
     },
     {
-      id: 9,
-      name: 'World Boy',
-      storeName: 'Blue Chéri Gaysorn Amarin',
-      image: '/images/point-cars/World Boy.png',
-      storeImage: '/images/restaurant/r9.png',
-      logo: '/images/restaurant-logo/l9.png',
+      id: 6,
+      name: 'Qtako',
+      storeName: 'Blue Chéri',
+      image: '/images/point-cars/Qtako.png',
+      storeImage: '/images/restaurant/r5.png',
+      logo: '/images/restaurant-logo/l5.png',
       location: {
-        floor: '496 Gaysorn Amarin, ห้อง 4F-OP03&4F-LS03-04 4th Floor, 502 10330',
-        address: 'ถนน เพลินจิต แขวงลุมพินี',
+        floor: '4 Floor',
+        address: '502 10330 ถนน เพลินจิต แขวงลุมพินี',
         district: 'เขตปทุมวัน กรุงเทพมหานคร',
         postalCode: '10330'
       },
       hours: '7:00–19:00',
-      phone: '061 391 7649',
-      mapLink: 'https://maps.app.goo.gl/fW6d3AQniTgv69fx6'
+      phone: '0613917649',
+      mapLink: 'https://maps.app.goo.gl/yMPdmqLC319fQWgu5'
+    },
+    {
+      id: 7,
+      name: 'Dylie',
+      storeName: 'The Urban GFloor',
+      image: '/images/point-cars/Dylie.png',
+      storeImage: '/images/restaurant/start.png',
+      logo: '/images/restaurant-logo/lstart.png',
+      location: {
+        floor: 'G Floor',
+        address: '502 ถนน เพลินจิต แขวงลุมพินี',
+        district: 'เขตปทุมวัน กรุงเทพมหานคร',
+        postalCode: '10330'
+      },
+      hours: '10:00–21:00',
+      phone: '026504703',
+      mapLink: 'https://maps.app.goo.gl/TH8DSRpoDUbcBpQr7'
+    },
+    {
+      id: 8,
+      name: 'Korn Doll',
+      storeName: 'The Urban 2Floor',
+      image: '/images/point-cars/Korn Doll.png',
+      storeImage: '/images/restaurant/start.png',
+      logo: '/images/restaurant-logo/lstart.png',
+      location: {
+        floor: '2 Floor',
+        address: '502 ถนน เพลินจิต แขวงลุมพินี',
+        district: 'เขตปทุมวัน กรุงเทพมหานคร',
+        postalCode: '10330'
+      },
+      hours: '10:00–21:00',
+      phone: '026504703',
+      mapLink: 'https://maps.app.goo.gl/TH8DSRpoDUbcBpQr7'
+    },
+    {
+      id: 9,
+      name: 'World Boy',
+      storeName: 'The Urban',
+      image: '/images/point-cars/World Boy.png',
+      storeImage: '/images/restaurant/start.png',
+      logo: '/images/restaurant-logo/lstart.png',
+      location: {
+        floor: '3 Floor',
+        address: '502 ถนน เพลินจิต แขวงลุมพินี',
+        district: 'เขตปทุมวัน กรุงเทพมหานคร',
+        postalCode: '10330'
+      },
+      hours: '10:00–21:00',
+      phone: '026504703',
+      mapLink: 'https://maps.app.goo.gl/TH8DSRpoDUbcBpQr7'
     }
   ]
 
@@ -305,7 +305,7 @@ function StoreDetail() {
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            marginBottom: '16px'
+            marginBottom: '8px'
           }}>
             <ImageWithLoading
               src={store.logo}
@@ -338,20 +338,29 @@ function StoreDetail() {
           </div>
 
           {/* Location */}
-          <div style={{ marginBottom: '12px' }}>
+          <div style={{ 
+            marginBottom: '12px',
+            paddingTop: '0',
+            borderTop: 'none',
+            WebkitTapHighlightColor: 'transparent'
+          }}>
             <div style={{
               display: 'flex',
               alignItems: 'flex-start',
               gap: '8px',
-              marginBottom: '8px'
+              WebkitTapHighlightColor: 'transparent'
             }}>
               <MapPin size={16} style={{ color: '#dc2626', marginTop: '2px', flexShrink: 0 }} />
-              <div>
+              <div style={{
+                WebkitTapHighlightColor: 'transparent',
+                userSelect: 'none'
+              }}>
                 <p style={{
                   fontSize: '14px',
                   fontWeight: '600',
                   color: '#374151',
-                  margin: '0 0 4px 0'
+                  margin: '0 0 4px 0',
+                  textDecoration: 'none'
                 }}>
                   ตั้งอยู่ใน
                 </p>
@@ -460,7 +469,6 @@ function StoreDetail() {
             padding: '12px',
             backgroundColor: '#fef3c7',
             borderRadius: '8px',
-            border: '1px solid #f59e0b',
             display: 'flex',
             alignItems: 'center',
             gap: '8px'

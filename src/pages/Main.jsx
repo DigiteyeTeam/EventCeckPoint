@@ -36,15 +36,15 @@ function Main() {
 
   // Store data with coordinates and map links
   const stores = [
-    { id: 1, name: 'Colonel Gold Fang', storeName: 'Dough Bros. Pizza & Doughnuts', slug: 'colonel-gold-fang', image: '/images/point-cars/Colonel Gold Fang.png', imageBlack: '/images/point-cars-black/Colonel Gold Fang.png', lat: 13.7563, lng: 100.5018, mapLink: 'https://maps.app.goo.gl/swtgj2HKEG8jBRti8' },
-    { id: 2, name: 'Greenie & Elfie', storeName: "Mickey's Diner BKK", slug: 'greenie-elfie', image: '/images/point-cars/Greenie & Elfie.png', imageBlack: '/images/point-cars-black/Greenie & Elfie.png', lat: 13.7564, lng: 100.5019, mapLink: 'https://maps.app.goo.gl/BvNV1PHRYoScZVHj9' },
-    { id: 3, name: 'Splash', storeName: 'Villa Market - Gaysorn Amarin', slug: 'splash', image: '/images/point-cars/Splash.png', imageBlack: '/images/point-cars-black/Splash.png', lat: 13.7565, lng: 100.5020, mapLink: 'https://maps.app.goo.gl/W88CtzsNZeAAZFLA6' },
-    { id: 4, name: 'Kongrit', storeName: 'NICO NICO - Gaysorn Amarin', slug: 'kongrit', image: '/images/point-cars/Kongrit.png', imageBlack: '/images/point-cars-black/Kongrit.png', lat: 13.7566, lng: 100.5021, mapLink: 'https://maps.app.goo.gl/e1Cy8iCXHPXo1pog9' },
-    { id: 5, name: 'Ai-Sam-Ta', storeName: 'Raynue', slug: 'ai-sam-ta', image: '/images/point-cars/Ai-Sam-Ta.png', imageBlack: '/images/point-cars-black/Ai-Sam-Ta.png', lat: 13.7567, lng: 100.5022, mapLink: 'https://maps.app.goo.gl/fWDpCrXSph6RKT779' },
-    { id: 6, name: 'Qtako', storeName: 'ToroTora', slug: 'qtako', image: '/images/point-cars/Qtako.png', imageBlack: '/images/point-cars-black/Qtako.png', lat: 13.7568, lng: 100.5023, mapLink: 'https://maps.app.goo.gl/yYv1v8YqwTohfY4U6' },
-    { id: 7, name: 'Dylie', storeName: 'Brewave Gaysorn Amarin', slug: 'dylie', image: '/images/point-cars/Dylie.png', imageBlack: '/images/point-cars-black/Dylie.png', lat: 13.7569, lng: 100.5024, mapLink: 'https://maps.app.goo.gl/8cmZYMrFsP5rNWQo8' },
-    { id: 8, name: 'Korn Doll', storeName: 'Jiaozi Jiuba', slug: 'korn-doll', image: '/images/point-cars/Korn Doll.png', imageBlack: '/images/point-cars-black/Korn Doll.png', lat: 13.7570, lng: 100.5025, mapLink: 'https://maps.app.goo.gl/x3uJkfpSoja8uPxs9' },
-    { id: 9, name: 'World Boy', storeName: 'Blue Chéri Gaysorn Amarin', slug: 'world-boy', image: '/images/point-cars/World Boy.png', imageBlack: '/images/point-cars-black/World Boy.png', lat: 13.7571, lng: 100.5026, mapLink: 'https://maps.app.goo.gl/fW6d3AQniTgv69fx6' }
+    { id: 1, name: 'Colonel Gold Fang', storeName: 'Start', slug: 'colonel-gold-fang', image: '/images/point-cars/Colonel Gold Fang.png', imageBlack: '/images/point-cars/Colonel Gold Fang.png', lat: 13.7563, lng: 100.5018, mapLink: 'https://maps.app.goo.gl/L8ZUBiRym9Xjqfan6' },
+    { id: 2, name: 'Greenie & Elfie', storeName: "Dough Bros. Pizza & Doughnuts", slug: 'greenie-elfie', image: '/images/point-cars/Greenie & Elfie.png', imageBlack: '/images/point-cars-black/Greenie & Elfie.png', lat: 13.7564, lng: 100.5019, mapLink: 'https://maps.app.goo.gl/p1B8QpLVGJKehhxj6' },
+    { id: 3, name: 'Splash', storeName: 'NICO NICO', slug: 'splash', image: '/images/point-cars/Splash.png', imageBlack: '/images/point-cars-black/Splash.png', lat: 13.7565, lng: 100.5020, mapLink: 'https://maps.app.goo.gl/tjjsHVrd5iZTcNxo6' },
+    { id: 4, name: 'Kongrit', storeName: 'Raynue', slug: 'kongrit', image: '/images/point-cars/Kongrit.png', imageBlack: '/images/point-cars-black/Kongrit.png', lat: 13.7566, lng: 100.5021, mapLink: 'https://maps.app.goo.gl/hzxhhx3uxtA6SGYX8' },
+    { id: 5, name: 'Ai-Sam-Ta', storeName: 'Jiaozi Jiuba', slug: 'ai-sam-ta', image: '/images/point-cars/Ai-Sam-Ta.png', imageBlack: '/images/point-cars-black/Ai-Sam-Ta.png', lat: 13.7567, lng: 100.5022, mapLink: 'https://maps.app.goo.gl/aivutBgHTzCTy7G19' },
+    { id: 6, name: 'Qtako', storeName: 'Blue Chéri', slug: 'qtako', image: '/images/point-cars/Qtako.png', imageBlack: '/images/point-cars-black/Qtako.png', lat: 13.7568, lng: 100.5023, mapLink: 'https://maps.app.goo.gl/KQA5ACd4EECnQVZz7' },
+    { id: 7, name: 'Dylie', storeName: 'The Urban GFloor', slug: 'dylie', image: '/images/point-cars/Dylie.png', imageBlack: '/images/point-cars-black/Dylie.png', lat: 13.7569, lng: 100.5024, mapLink: 'https://maps.app.goo.gl/L8ZUBiRym9Xjqfan6' },
+    { id: 8, name: 'Korn Doll', storeName: 'The Urban 2Floor', slug: 'korn-doll', image: '/images/point-cars/Korn Doll.png', imageBlack: '/images/point-cars-black/Korn Doll.png', lat: 13.7570, lng: 100.5025, mapLink: 'https://maps.app.goo.gl/L8ZUBiRym9Xjqfan6' },
+    { id: 9, name: 'World Boy', storeName: 'The Urban 3Floor', slug: 'world-boy', image: '/images/point-cars/World Boy.png', imageBlack: '/images/point-cars-black/World Boy.png', lat: 13.7571, lng: 100.5026, mapLink: 'https://maps.app.goo.gl/L8ZUBiRym9Xjqfan6' }
   ]
 
   // No need for manual mappings - system will resolve short URLs automatically
@@ -457,35 +457,6 @@ function Main() {
         }}
       />
 
-      {/* Roadmap Top Background */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '200px',
-          zIndex: 1.5
-        }}
-      >
-        <img
-          src="/images/bg-roadmaptop.png"
-          alt="Roadmap Top Background"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: 1
-          }}
-        />
-      </motion.div>
-
       {/* Particles Background */}
       {particlesInit && (
         <Particles
@@ -571,53 +542,18 @@ function Main() {
         />
       )}
       
-          {/* Header */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }} // Header appearance
-            style={{ 
-              padding: '5px',
-              textAlign: 'center',
-              position: 'relative',
-              zIndex: 3,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%'
-            }}
-      >
-        
-        {/* ROADMAP Image */}
-        <ImageWithLoading
-          src="/images/roadmap.png" 
-          alt="ROADMAP"
-          style={{
-            height: '60px',
-            width: 'auto',
-            maxWidth: '300px',
-            objectFit: 'contain',
-            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.3))',
-            position: 'relative',
-            zIndex: 2
-          }}
-          skeletonStyle={{
-            height: '60px',
-            width: '200px',
-            borderRadius: '8px'
-          }}
-        />
-      </motion.div>
-
           {/* Roadmap Area */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.8 }} // Roadmap appearance
             style={{ 
-              height: '114vh',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '100vh',
               width: '100%',
-              position: 'relative',
               zIndex: 2
             }}
       >
@@ -626,7 +562,9 @@ function Main() {
           initialScale={0.5}
           minScale={0.3}
           maxScale={3}
-          centerOnInit={true}
+          centerOnInit={false}
+          initialPositionX={0}
+          initialPositionY={0}
           wheel={{ disabled: true }}
           pinch={{ disabled: true }}
           doubleClick={{ disabled: true }}
@@ -637,12 +575,15 @@ function Main() {
             lockAxisY: false
           }}
           limitToBounds={true}
-          centerZoomedOut={true}
+          centerZoomedOut={false}
         >
           <TransformComponent
             wrapperStyle={{
               width: '100%',
-              height: '100%'
+              height: '100%',
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start'
             }}
             contentStyle={{
               width: '100%',
@@ -655,11 +596,14 @@ function Main() {
               width: '150%',
               height: '150%',
               minHeight: '1000px',
-              margin: '-25%'
+              marginTop: -300,
+              marginLeft: '-25%',
+              marginRight: '-25%',
+              marginBottom: '-25%'
             }}>
                   {/* Road Background */}
                   <img 
-                    src="/images/road.png" 
+                    src="/images/road-1.png" 
                     alt="Road"
                     style={{
                       position: 'absolute',
@@ -702,15 +646,15 @@ function Main() {
               {stores.map((store, index) => {
                 const isCheckedIn = checkedInStores.includes(store.id)
                 const positions = [
-                  { top: '-28vh', left: '15%' },   // Colonel Gold Fang
-                  { top: '5vh', right: '15%' },  // Greenie & Elfie
-                  { top: '20vh', left: '5%' },   // Splash
-                  { top: '45vh', right: '20%' },  // Kongrit
-                  { top: '65vh', left: '-5%' },   // Ai-Sam-Ta
-                  { top: '65vh', right: '0%' },  // Qtako
-                  { top: '85vh', left: '30%' },   // Dylie
-                  { top: '105vh', right: '11%' },  // World Boy
-                  { top: '125vh', left: '20%' }    // Korn Doll
+                  { top: '125vh', left: '35%' },   // Colonel Gold Fang
+                  { top: '95vh', left: '10%' },  // Greenie & Elfie
+                  { top: '80vh', right: '20%' },   // Splash
+                  { top: '70vh', right: '-10%' },  // Kongrit
+                  { top: '62vh', left: '30%' },   // Ai-Sam-Ta
+                  { top: '55vh', left: '-5%' },  // Qtako
+                  { top: '40vh', left: '55%' },   // Dylie
+                  { top: '30vh', right: '-5%' },  // World Boy
+                  { top: '15vh', left: '10%' }    // Korn Doll
                 ]
 
                 return (
