@@ -238,12 +238,12 @@ function Coupon() {
 
         {/* Body Section - 50% */}
         <div style={{
-          height: '50vh',
+          height: '60vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'flex-end',
-          padding: '10px 5px',
+          justifyContent: 'center',
+          padding: '5px',
           position: 'relative',
           flexShrink: 0
         }}>
@@ -251,11 +251,11 @@ function Coupon() {
           <motion.div 
             style={{
               position: 'absolute',
-              top: '-30px',
+              top: '-20px',
               transform: 'translateX(-50%)',
-              width: '80%',
-              maxWidth: '260px',
-              height: '180px',
+              width: '100%',
+              maxWidth: '240px',
+              height: '160px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -407,21 +407,23 @@ function Coupon() {
             onClick={handleRedeemClick}
             disabled={availableStores.length === 0 || isRedeemed}
             style={{
-              width: '75%',
-              maxWidth: '280px',
-              padding: '14px 24px',
+              width: '70%',
+              maxWidth: '260px',
+              padding: '12px 20px',
               backgroundColor: (availableStores.length > 0 && !isRedeemed) ? 'white' : '#e5e7eb',
               color: (availableStores.length > 0 && !isRedeemed) ? '#1f2937' : '#9ca3af',
               border: 'none',
-              borderRadius: '22px',
-              fontSize: '17px',
+              borderRadius: '20px',
+              fontSize: '16px',
               fontWeight: 'bold',
               cursor: (availableStores.length > 0 && !isRedeemed) ? 'pointer' : 'not-allowed',
               boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
               transition: 'all 0.3s ease',
               textShadow: 'none',
-              marginTop: '-10px',
-              marginBottom: '15px'
+              marginTop: '-50px',
+              marginBottom: '0px',
+              position: 'relative',
+              zIndex: 10
             }}
             onMouseEnter={(e) => {
               if (availableStores.length > 0 && !isRedeemed) {
