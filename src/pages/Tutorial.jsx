@@ -60,12 +60,12 @@ function Tutorial() {
       <div style={{ 
         backgroundColor: 'white',
         textAlign: 'center',
-        padding: '12px 0',
+        padding: '10px 0',
         flexShrink: 0
       }}>
         <h1 style={{ 
           color: '#dc2626', 
-          fontSize: '18px', 
+          fontSize: '16px', 
           fontWeight: '700',
           fontFamily: "'Poppins', sans-serif",
           margin: '0',
@@ -79,20 +79,19 @@ function Tutorial() {
       <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 
-        padding: '10px 15px',
+        alignItems: 'center',
+        padding: '5px 10px',
         backgroundColor: 'white',
-        flex: '1 1 auto',
-        minHeight: 0
+        height: '50vh',
+        flexShrink: 0
       }}>
         <img
           src={currentStepData.image} 
           alt={`Tutorial Step ${currentStep + 1}`}
           style={{
             maxWidth: '100%',
-            height: 'auto',
-            maxHeight: '100%',
-            objectFit: 'contain',
-            width: '100%'
+            height: '50vh',
+            objectFit: 'contain'
           }}
           onLoad={() => console.log(`Tutorial image loaded: ${currentStepData.image}`)}
           onError={() => console.log(`Tutorial image failed to load: ${currentStepData.image}`)}
@@ -104,7 +103,7 @@ function Tutorial() {
         display: 'flex', 
         justifyContent: 'center', 
         gap: '8px',
-        padding: '10px 0',
+        padding: '8px 0',
         flexShrink: 0
       }}>
         {steps.map((_, index) => (
@@ -122,14 +121,14 @@ function Tutorial() {
 
       {/* Description */}
       <div style={{ 
-        padding: '0 15px 10px 15px',
+        padding: '0 15px 8px 15px',
         textAlign: 'center',
         flexShrink: 0
       }}>
         <p style={{ 
           color: '#374151',
-          fontSize: '16px',
-          lineHeight: '1.5',
+          fontSize: '14px',
+          lineHeight: '1.4',
           margin: '0',
           whiteSpace: 'pre-line'
         }}>
@@ -154,21 +153,21 @@ function Tutorial() {
 
       {/* Footer Buttons */}
       <div style={{ 
-        padding: '12px 15px',
+        padding: '10px 15px',
         backgroundColor: 'white',
         borderTop: '1px solid #e5e7eb',
         flexShrink: 0
       }}>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             onClick={handleBack}
             style={{
               flex: 1,
-              padding: '12px',
+              padding: '10px',
               backgroundColor: 'white',
               border: '1px solid #d1d5db',
               borderRadius: '12px',
-              fontSize: '15px',
+              fontSize: '14px',
               fontWeight: '600',
               color: '#374151',
               cursor: 'pointer'
@@ -180,11 +179,11 @@ function Tutorial() {
             onClick={handleNext}
             style={{
               flex: 1,
-              padding: '12px',
+              padding: '10px',
               background: 'linear-gradient(135deg, #dc2626, #ef4444)',
               border: 'none',
               borderRadius: '12px',
-              fontSize: '15px',
+              fontSize: '14px',
               fontWeight: '600',
               color: 'white',
               cursor: 'pointer'
