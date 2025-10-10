@@ -47,6 +47,10 @@ export const clearAllData = () => {
   try {
     localStorage.removeItem('userData')
     localStorage.removeItem('deviceId')
+    localStorage.removeItem('checkedInStores')
+    localStorage.removeItem('couponRedeemed')
+    localStorage.removeItem('couponShown')
+    sessionStorage.removeItem('fromCoupon')
     return true
   } catch (error) {
     console.error('Error clearing data:', error)

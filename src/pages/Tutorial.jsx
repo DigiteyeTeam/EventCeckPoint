@@ -50,16 +50,18 @@ function Tutorial() {
 
   return (
     <div style={{ 
-      minHeight: '100vh', 
+      height: '100vh',
       backgroundColor: '#f8f9fa',
-      overflowY: 'auto',
-      paddingBottom: '100px'
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
       {/* Header */}
       <div style={{ 
         backgroundColor: 'white',
         textAlign: 'center',
-        padding: '20px 0'
+        padding: '12px 0',
+        flexShrink: 0
       }}>
         <h1 style={{ 
           color: '#dc2626', 
@@ -77,8 +79,10 @@ function Tutorial() {
       <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 
-        padding: '20px',
-        backgroundColor: 'white'
+        padding: '10px 15px',
+        backgroundColor: 'white',
+        flex: '1 1 auto',
+        minHeight: 0
       }}>
         <img
           src={currentStepData.image} 
@@ -86,7 +90,7 @@ function Tutorial() {
           style={{
             maxWidth: '100%',
             height: 'auto',
-            maxHeight: '50vh',
+            maxHeight: '100%',
             objectFit: 'contain',
             width: '100%'
           }}
@@ -100,7 +104,8 @@ function Tutorial() {
         display: 'flex', 
         justifyContent: 'center', 
         gap: '8px',
-        padding: '20px 0'
+        padding: '10px 0',
+        flexShrink: 0
       }}>
         {steps.map((_, index) => (
           <div
@@ -117,8 +122,9 @@ function Tutorial() {
 
       {/* Description */}
       <div style={{ 
-        padding: '0 20px 20px 20px',
-        textAlign: 'center'
+        padding: '0 15px 10px 15px',
+        textAlign: 'center',
+        flexShrink: 0
       }}>
         <p style={{ 
           color: '#374151',
@@ -148,24 +154,21 @@ function Tutorial() {
 
       {/* Footer Buttons */}
       <div style={{ 
-        position: 'fixed', 
-        bottom: '0', 
-        left: '0', 
-        right: '0',
-        padding: '20px',
+        padding: '12px 15px',
         backgroundColor: 'white',
-        borderTop: '1px solid #e5e7eb'
+        borderTop: '1px solid #e5e7eb',
+        flexShrink: 0
       }}>
-        <div style={{ display: 'flex', gap: '15px' }}>
+        <div style={{ display: 'flex', gap: '12px' }}>
           <button
             onClick={handleBack}
             style={{
               flex: 1,
-              padding: '15px',
+              padding: '12px',
               backgroundColor: 'white',
               border: '1px solid #d1d5db',
               borderRadius: '12px',
-              fontSize: '16px',
+              fontSize: '15px',
               fontWeight: '600',
               color: '#374151',
               cursor: 'pointer'
@@ -177,11 +180,11 @@ function Tutorial() {
             onClick={handleNext}
             style={{
               flex: 1,
-              padding: '15px',
+              padding: '12px',
               background: 'linear-gradient(135deg, #dc2626, #ef4444)',
               border: 'none',
               borderRadius: '12px',
-              fontSize: '16px',
+              fontSize: '15px',
               fontWeight: '600',
               color: 'white',
               cursor: 'pointer'

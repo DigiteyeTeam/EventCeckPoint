@@ -135,6 +135,8 @@ function Coupon() {
       
       // Navigate to main page
       setTimeout(() => {
+        // Clear the flag so user won't be redirected back
+        sessionStorage.removeItem('fromCoupon')
         navigate('/main')
       }, 2000)
     } else {
@@ -149,15 +151,18 @@ function Coupon() {
   }
 
   const handleBackToMain = () => {
+    // Clear the flag so user can return to main without auto-redirect
+    sessionStorage.removeItem('fromCoupon')
     navigate('/main')
   }
 
   return (
     <div style={{ 
-      minHeight: '100vh', 
+      height: '100vh',
       backgroundColor: '#f8f9fa',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      overflow: 'hidden'
     }}>
       {/* Background */}
       <div style={{
@@ -184,11 +189,12 @@ function Coupon() {
         
         {/* Highlight Section - 50% */}
         <div style={{
-          height: '55vh',
+          height: '50vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          position: 'relative'
+          position: 'relative',
+          flexShrink: 0
         }}>
           <ImageWithLoading
             src="/images/hl-coupon.png"
@@ -211,14 +217,14 @@ function Coupon() {
             onClick={handleBackToMain}
             style={{
               position: 'absolute',
-              top: '20px',
-              left: '20px',
+              top: '15px',
+              left: '15px',
               backgroundColor: 'rgba(0,0,0,0.5)',
               color: 'white',
               border: 'none',
               borderRadius: '50%',
-              width: '40px',
-              height: '40px',
+              width: '36px',
+              height: '36px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -226,29 +232,30 @@ function Coupon() {
               zIndex: 10
             }}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} />
           </button>
         </div>
 
         {/* Body Section - 50% */}
         <div style={{
-          height: '40vh',
+          height: '50vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          padding: '5px',
-          position: 'relative'
+          padding: '10px 5px',
+          position: 'relative',
+          flexShrink: 0
         }}>
           {/* Card Background */}
           <motion.div 
             style={{
               position: 'absolute',
-              top: '-5px',
+              top: '-30px',
               transform: 'translateX(-50%)',
-              width: '85%',
-              maxWidth: '280px',
-              height: '200px',
+              width: '80%',
+              maxWidth: '260px',
+              height: '180px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -400,20 +407,21 @@ function Coupon() {
             onClick={handleRedeemClick}
             disabled={availableStores.length === 0 || isRedeemed}
             style={{
-              width: '80%',
-              maxWidth: '300px',
-              padding: '18px 30px',
+              width: '75%',
+              maxWidth: '280px',
+              padding: '14px 24px',
               backgroundColor: (availableStores.length > 0 && !isRedeemed) ? 'white' : '#e5e7eb',
               color: (availableStores.length > 0 && !isRedeemed) ? '#1f2937' : '#9ca3af',
               border: 'none',
-              borderRadius: '25px',
-              fontSize: '18px',
+              borderRadius: '22px',
+              fontSize: '17px',
               fontWeight: 'bold',
               cursor: (availableStores.length > 0 && !isRedeemed) ? 'pointer' : 'not-allowed',
               boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
               transition: 'all 0.3s ease',
               textShadow: 'none',
-              marginTop: '-20px'
+              marginTop: '-10px',
+              marginBottom: '15px'
             }}
             onMouseEnter={(e) => {
               if (availableStores.length > 0 && !isRedeemed) {

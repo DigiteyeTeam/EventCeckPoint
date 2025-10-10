@@ -110,6 +110,35 @@ function Main() {
     }
   }, [checkedInStores])
 
+  // Auto redirect to coupon page when all 8 stores are checked in (ONCE only)
+  useEffect(() => {
+    // Check if user came from coupon page (to prevent infinite loop)
+    const fromCoupon = sessionStorage.getItem('fromCoupon')
+    // Check if coupon page was already shown
+    const couponShown = localStorage.getItem('couponShown')
+    
+    // If user completed all 8 check-ins, not coming from coupon page, and NEVER shown coupon page before
+    if (validCheckedInStores.length === 8 && !fromCoupon && couponShown !== 'true') {
+      console.log('All 8 stores checked in! Redirecting to coupon page (first time)...')
+      // Mark that we've shown the coupon page
+      localStorage.setItem('couponShown', 'true')
+      // Set flag to prevent redirect loop
+      sessionStorage.setItem('fromCoupon', 'true')
+      // Small delay for better UX
+      setTimeout(() => {
+        navigate('/coupon')
+      }, 500)
+    }
+    
+    // Clear the flag when user navigates away naturally
+    return () => {
+      // Only clear if we're not navigating to coupon
+      if (fromCoupon && validCheckedInStores.length < 8) {
+        sessionStorage.removeItem('fromCoupon')
+      }
+    }
+  }, [validCheckedInStores, navigate])
+
   const handleMapClick = (store) => {
     console.log('Map clicked!', store)
     navigate(`/store/${store.id}`)
@@ -651,13 +680,13 @@ function Main() {
                 const positions = [
                   { top: '111vh', left: '36%' },   // Colonel Gold Fang
                   { top: '92vh', left: '10%' },  // Greenie & Elfie
-                  { top: '80vh', right: '20%' },   // Splash
-                  { top: '70vh', right: '-10%' },  // Kongrit
-                  { top: '62vh', left: '30%' },   // Ai-Sam-Ta
-                  { top: '55vh', left: '-5%' },  // Qtako
-                  { top: '40vh', left: '55%' },   // Dylie
-                  { top: '30vh', right: '-5%' },  // World Boy
-                  { top: '15vh', left: '10%' }    // Korn Doll
+                  { top: '70vh', right: '-5%' },   // Splash
+                  { top: '50vh', left: '-10%' },  // Kongrit
+                  { top: '20vh', left: '15%' },   // Ai-Sam-Ta
+                  { top: '10vh', right: '0%' },  // Qtako
+                  { top: '82vh', left: '55%' },   // Dylie
+                  { top: '60vh', left: '30%' },  // World Boy
+                  { top: '40vh', right: '20%' }    // Korn Doll
                 ]
 
                 return (
