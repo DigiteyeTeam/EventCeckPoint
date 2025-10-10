@@ -47,6 +47,9 @@ function Main() {
     { id: 9, name: 'World Boy', storeName: 'The Urban 3Floor', slug: 'world-boy', image: '/images/point-cars/World Boy.png', imageBlack: '/images/point-cars-black/World Boy.png', lat: 13.7571, lng: 100.5026, mapLink: 'https://maps.app.goo.gl/L8ZUBiRym9Xjqfan6' }
   ]
 
+  // Filter out Colonel Gold Fang (id: 1) from checkedInStores for counting
+  const validCheckedInStores = checkedInStores.filter(id => id !== 1)
+
   // No need for manual mappings - system will resolve short URLs automatically
 
   useEffect(() => {
@@ -1129,7 +1132,7 @@ function Main() {
                 textAlign: 'center',
                 minWidth: '40px'
               }}>
-                {checkedInStores.length}/9
+                {validCheckedInStores.length}/8
               </div>
             </div>
 
@@ -1138,36 +1141,36 @@ function Main() {
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
-                console.log('Coupon clicked!', checkedInStores.length)
-                if (checkedInStores.length === 9) {
+                console.log('Coupon clicked!', validCheckedInStores.length)
+                if (validCheckedInStores.length === 8) {
                   navigate('/coupon')
                 }
               }}
-              disabled={checkedInStores.length !== 9}
+              disabled={validCheckedInStores.length !== 8}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 background: 'none',
                 border: 'none',
-                color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af',
-                cursor: checkedInStores.length === 9 ? 'pointer' : 'not-allowed',
+                color: validCheckedInStores.length === 8 ? '#FCD34D' : '#9ca3af',
+                cursor: validCheckedInStores.length === 8 ? 'pointer' : 'not-allowed',
                 padding: '8px',
                 marginBottom: '-10px',
                 transition: 'all 0.3s ease',
                 zIndex: 1002,
                 position: 'relative'
               }}
-              whileHover={checkedInStores.length === 9 ? { 
+              whileHover={validCheckedInStores.length === 8 ? { 
                 scale: 1.1,
                 color: '#F59E0B',
                 transition: { duration: 0.2 }
               } : {}}
-              whileTap={checkedInStores.length === 9 ? { scale: 0.95 } : {}}
-              animate={checkedInStores.length === 9 ? {
+              whileTap={validCheckedInStores.length === 8 ? { scale: 0.95 } : {}}
+              animate={validCheckedInStores.length === 8 ? {
                 y: [0, -2, 0]
               } : {}}
-              transition={checkedInStores.length === 9 ? {
+              transition={validCheckedInStores.length === 8 ? {
                 y: {
                   duration: 3,
                   repeat: Infinity,
@@ -1179,13 +1182,13 @@ function Main() {
                 width: '22px', 
                 height: '22px', 
                 marginBottom: '4px',
-                color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af'
+                color: validCheckedInStores.length === 8 ? '#FCD34D' : '#9ca3af'
               }} />
               <span style={{ 
                 fontSize: '10px', 
                 fontWeight: '500', 
                 fontFamily: "'Inter', sans-serif",
-                color: checkedInStores.length === 9 ? '#FCD34D' : '#9ca3af'
+                color: validCheckedInStores.length === 8 ? '#FCD34D' : '#9ca3af'
               }}>Coupon</span>
             </motion.button>
             </div>
