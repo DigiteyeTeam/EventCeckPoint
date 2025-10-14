@@ -13,7 +13,6 @@ import { isUserRegistered } from './utils/storage'
 
 function App() {
   const [isRegistered, setIsRegistered] = useState(null)
-  const [isRedirecting, setIsRedirecting] = useState(false)
 
   useEffect(() => {
     // Check if user is registered
@@ -39,12 +38,9 @@ function App() {
     
     if (isInLIFF) {
       console.log('Detected LINE LIFF browser, showing redirect message...')
-      setIsRedirecting(true)
       
-      // Show message immediately instead of trying to redirect
-      setTimeout(() => {
-        showBrowserRedirectMessage()
-      }, 1000)
+      // Show message immediately
+      showBrowserRedirectMessage()
     }
   }
 
@@ -71,35 +67,17 @@ function App() {
         background: white;
         padding: 40px 32px;
         border-radius: 24px;
-        max-width: 380px;
+        max-width: 400px;
         width: 90%;
         text-align: center;
         box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         border: 1px solid rgba(0,0,0,0.05);
         animation: modalSlideIn 0.3s ease-out;
       ">
-        <!-- Icon -->
-        <div style="
-          width: 80px;
-          height: 80px;
-          background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 24px auto;
-          box-shadow: 0 8px 32px rgba(238, 90, 82, 0.3);
-        ">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-          </svg>
-        </div>
-        
         <!-- Title -->
         <h2 style="
           color: #1a1a1a;
-          margin: 0 0 16px 0;
+          margin: 0 0 20px 0;
           font-size: 24px;
           font-weight: 700;
           letter-spacing: -0.02em;
@@ -115,7 +93,8 @@ function App() {
           font-size: 16px;
           font-weight: 400;
         ">
-          โปรดเปิดบน Chrome, Safari หรือ Firefox
+          ระบบนี้รองรับเฉพาะ Chrome, Safari และ Firefox เท่านั้น<br>
+          กรุณาคัดลอกลิงก์แล้วเปิดใน Browser ที่รองรับ
         </p>
         
         <!-- Action Buttons -->
@@ -128,7 +107,7 @@ function App() {
             onclick="
               const url = '${window.location.href}';
               navigator.clipboard.writeText(url).then(() => {
-                alert('คัดลอกลิงก์เรียบร้อย!');
+                alert('คัดลอกลิงก์เรียบร้อย! กรุณาเปิดใน Chrome, Safari หรือ Firefox');
               });
             " 
             style="
@@ -146,7 +125,7 @@ function App() {
             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(102, 126, 234, 0.4)'"
             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(102, 126, 234, 0.3)'"
           >
-            📋 คัดลอกลิงก์
+            คัดลอกลิงก์
           </button>
           
           <button 
@@ -168,16 +147,6 @@ function App() {
             ปิด
           </button>
         </div>
-        
-        <!-- Help Text -->
-        <p style="
-          color: #999;
-          font-size: 14px;
-          margin: 24px 0 0 0;
-          line-height: 1.4;
-        ">
-          💡 คัดลอกลิงก์แล้วเปิดใน Browser ที่รองรับ
-        </p>
       </div>
       
       <style>
@@ -205,8 +174,8 @@ function App() {
     }, 15000)
   }
 
-  // Show loading while checking registration status or redirecting
-  if (isRegistered === null || isRedirecting) {
+  // Show loading while checking registration status
+  if (isRegistered === null) {
     return (
       <div style={{ 
         minHeight: '100vh', 
@@ -225,9 +194,7 @@ function App() {
             animation: 'spin 1s linear infinite',
             margin: '0 auto 16px auto'
           }}></div>
-          <p style={{ color: '#6b7280', fontSize: '14px' }}>
-            {isRedirecting ? 'กำลังเปิดใน Browser หลัก...' : 'Loading...'}
-          </p>
+          <p style={{ color: '#6b7280', fontSize: '14px' }}>Loading...</p>
         </div>
       </div>
     )
