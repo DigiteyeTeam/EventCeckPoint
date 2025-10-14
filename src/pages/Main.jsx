@@ -699,66 +699,68 @@ function Main() {
                     alignItems: 'center',
                     cursor: 'pointer'
                   }}>
-                        {/* Map Pin */}
-                        <motion.button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            console.log('Map clicked!', store)
-                            handleMapClick(store)
-                          }}
-                          style={{
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            padding: '0px',
-                            zIndex: 1001,
-                            position: 'relative'
-                          }}
-                          whileHover={{ 
-                            scale: 1.2,
-                            rotate: [0, -10, 10, 0],
-                            transition: { duration: 0.2 }
-                          }}
-                          whileTap={{ scale: 0.9 }}
-                          animate={{
-                            y: [0, -15, 0],
-                            rotate: [0, 3, -3, 0],
-                            scale: [1, 1.05, 1]
-                          }}
-                          transition={{
-                            y: {
-                              duration: 1.5,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            },
-                            rotate: {
-                              duration: 2.5,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            },
-                            scale: {
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }
-                          }}
-                        >
-                      <ImageWithLoading
-                        src="/images/map.png" 
-                        alt="Map Pin"
-                        style={{
-                          width: '100px',
-                          height: '120px',
-                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
-                        }}
-                        skeletonStyle={{
-                          width: '100px',
-                          height: '120px',
-                          borderRadius: '8px'
-                        }}
-                      />
-                    </motion.button>
+                        {/* Map Pin - Hide for store id 1 */}
+                        {store.id !== 1 && (
+                          <motion.button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              console.log('Map clicked!', store)
+                              handleMapClick(store)
+                            }}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              padding: '0px',
+                              zIndex: 1001,
+                              position: 'relative'
+                            }}
+                            whileHover={{ 
+                              scale: 1.2,
+                              rotate: [0, -10, 10, 0],
+                              transition: { duration: 0.2 }
+                            }}
+                            whileTap={{ scale: 0.9 }}
+                            animate={{
+                              y: [0, -15, 0],
+                              rotate: [0, 3, -3, 0],
+                              scale: [1, 1.05, 1]
+                            }}
+                            transition={{
+                              y: {
+                                duration: 1.5,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              },
+                              rotate: {
+                                duration: 2.5,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              },
+                              scale: {
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              }
+                            }}
+                          >
+                            <ImageWithLoading
+                              src="/images/map.png" 
+                              alt="Map Pin"
+                              style={{
+                                width: '100px',
+                                height: '120px',
+                                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                              }}
+                              skeletonStyle={{
+                                width: '100px',
+                                height: '120px',
+                                borderRadius: '8px'
+                              }}
+                            />
+                          </motion.button>
+                        )}
 
                     {/* Avatar */}
                     <motion.div 

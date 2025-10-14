@@ -17,14 +17,14 @@ function Checkin() {
   // Store data mapping
   const stores = [
     { id: 1, name: 'Colonel Gold Fang', storeName: 'Start Gaysorn Amarin', slug: 'colonel-gold-fang', image: '/images/point-cars/Colonel Gold Fang.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://line.me/R/ti/p/@colonel-gold-fang' },
-    { id: 2, name: 'Greenie & Elfie', storeName: "Dough Bros. Pizza & Doughnuts", slug: 'greenie-elfie', image: '/images/point-cars/Greenie & Elfie.png', storeImage: '/images/restaurant/r1.png', logo: '/images/restaurant-logo/l1.png', couponLink: 'https://line.me/R/ti/p/@greenie-elfie' },
-    { id: 3, name: 'Splash', storeName: 'NICO NICO', slug: 'splash', image: '/images/point-cars/Splash.png', storeImage: '/images/restaurant/r2.jpg', logo: '/images/restaurant-logo/l2.png', couponLink: 'https://line.me/R/ti/p/@splash' },
-    { id: 4, name: 'Kongrit', storeName: 'Raynue', slug: 'kongrit', image: '/images/point-cars/Kongrit.png', storeImage: '/images/restaurant/r3.png', logo: '/images/restaurant-logo/l3.png', couponLink: 'https://line.me/R/ti/p/@kongrit' },
-    { id: 5, name: 'Ai-Sam-Ta', storeName: 'Jiaozi Jiuba', slug: 'ai-sam-ta', image: '/images/point-cars/Ai-Sam-Ta.png', storeImage: '/images/restaurant/r4.png', logo: '/images/restaurant-logo/l4.png', couponLink: 'https://line.me/R/ti/p/@ai-sam-ta' },
-    { id: 6, name: 'Qtako', storeName: 'Blue Chéri', slug: 'qtako', image: '/images/point-cars/Qtako.png', storeImage: '/images/restaurant/r5.png', logo: '/images/restaurant-logo/l5.png', couponLink: 'https://line.me/R/ti/p/@qtako' },
-    { id: 7, name: 'Dylie', storeName: 'The Urban GFloor', slug: 'dylie', image: '/images/point-cars/Dylie.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://line.me/R/ti/p/@dylie' },
-    { id: 8, name: 'Korn Doll', storeName: 'The Urban 2Floor', slug: 'korn-doll', image: '/images/point-cars/Korn Doll.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://line.me/R/ti/p/@korn-doll' },
-    { id: 9, name: 'World Boy', storeName: 'The Urban 3Floor', slug: 'world-boy', image: '/images/point-cars/World Boy.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://line.me/R/ti/p/@world-boy' }
+    { id: 2, name: 'Greenie & Elfie', storeName: "Dough Bros. Pizza & Doughnuts", slug: 'greenie-elfie', image: '/images/point-cars/Greenie & Elfie.png', storeImage: '/images/restaurant/r1.png', logo: '/images/restaurant-logo/l1.png', couponLink: 'https://lin.ee/nAK3jAM' },
+    { id: 3, name: 'Splash', storeName: 'NICO NICO', slug: 'splash', image: '/images/point-cars/Splash.png', storeImage: '/images/restaurant/r2.jpg', logo: '/images/restaurant-logo/l2.png', couponLink: 'https://lin.ee/FpG11mi' },
+    { id: 4, name: 'Kongrit', storeName: 'Raynue', slug: 'kongrit', image: '/images/point-cars/Kongrit.png', storeImage: '/images/restaurant/r3.png', logo: '/images/restaurant-logo/l3.png', couponLink: 'https://lin.ee/W2ti9C2' },
+    { id: 5, name: 'Ai-Sam-Ta', storeName: 'Jiaozi Jiuba', slug: 'ai-sam-ta', image: '/images/point-cars/Ai-Sam-Ta.png', storeImage: '/images/restaurant/r4.png', logo: '/images/restaurant-logo/l4.png', couponLink: 'https://lin.ee/hZo9oXU' },
+    { id: 6, name: 'Qtako', storeName: 'Blue Chéri', slug: 'qtako', image: '/images/point-cars/Qtako.png', storeImage: '/images/restaurant/r5.png', logo: '/images/restaurant-logo/l5.png', couponLink: 'https://lin.ee/HmF2bSX' },
+    { id: 7, name: 'Dylie', storeName: 'The Urban GFloor', slug: 'dylie', image: '/images/point-cars/Dylie.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://lin.ee/X8KNeRG' },
+    { id: 8, name: 'Korn Doll', storeName: 'The Urban 2Floor', slug: 'korn-doll', image: '/images/point-cars/Korn Doll.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://lin.ee/kYQaFHS' },
+    { id: 9, name: 'World Boy', storeName: 'The Urban 3Floor', slug: 'world-boy', image: '/images/point-cars/World Boy.png', storeImage: '/images/restaurant/start.png', logo: '/images/restaurant-logo/lstart.png', couponLink: 'https://lin.ee/aHvjJKn' }
   ]
 
   useEffect(() => {
