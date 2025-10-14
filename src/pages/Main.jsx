@@ -678,7 +678,7 @@ function Main() {
               {stores.map((store, index) => {
                 const isCheckedIn = checkedInStores.includes(store.id)
                 const positions = [
-                  { top: '111vh', left: '36%' },   // Colonel Gold Fang
+                  { top: '125vh', left: '36%' },   // Colonel Gold Fang
                   { top: '92vh', left: '10%' },  // Greenie & Elfie
                   { top: '70vh', right: '-5%' },   // Splash
                   { top: '50vh', left: '-10%' },  // Kongrit
