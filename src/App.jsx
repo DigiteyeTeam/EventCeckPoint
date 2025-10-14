@@ -38,44 +38,18 @@ function App() {
                      isLineBrowser
     
     if (isInLIFF) {
-      console.log('Detected LINE LIFF browser, redirecting to main browser...')
+      console.log('Detected LINE LIFF browser, showing redirect message...')
       setIsRedirecting(true)
       
-      // Create a redirect URL that will open in the main browser
-      const currentUrl = window.location.href
-      
-      // Method 1: Try to open in external browser using intent URL
-      const intentUrl = `intent://${window.location.host}${window.location.pathname}${window.location.search}#Intent;scheme=https;package=com.android.chrome;end`
-      
-      // Method 2: Create a fallback URL
-      const fallbackUrl = currentUrl
-      
-      // Try to redirect
-      try {
-        // For Android devices, try intent URL first
-        if (userAgent.includes('android')) {
-          window.location.href = intentUrl
-        } else {
-          // For other devices, try to open in new window
-          window.open(currentUrl, '_blank')
-        }
-      } catch (error) {
-        console.log('Redirect failed, using fallback:', error)
-        // Fallback: show instruction to user
-        showBrowserRedirectMessage()
-      }
-      
-      // Set timeout to show message if redirect doesn't work
+      // Show message immediately instead of trying to redirect
       setTimeout(() => {
-        if (isInLIFF) {
-          showBrowserRedirectMessage()
-        }
-      }, 3000)
+        showBrowserRedirectMessage()
+      }, 1000)
     }
   }
 
   const showBrowserRedirectMessage = () => {
-    // Create a modal to show redirect instructions
+    // Create a modern modal
     const modal = document.createElement('div')
     modal.style.cssText = `
       position: fixed;
@@ -83,71 +57,152 @@ function App() {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.75);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      font-family: 'Inter', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      backdrop-filter: blur(10px);
     `
     
     modal.innerHTML = `
       <div style="
         background: white;
-        padding: 30px;
-        border-radius: 20px;
-        max-width: 90%;
+        padding: 40px 32px;
+        border-radius: 24px;
+        max-width: 380px;
+        width: 90%;
         text-align: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        border: 1px solid rgba(0,0,0,0.05);
+        animation: modalSlideIn 0.3s ease-out;
       ">
-        <h2 style="color: #dc2626; margin-bottom: 20px; font-size: 24px;">
-          🌐 เปิดใน Browser หลัก
+        <!-- Icon -->
+        <div style="
+          width: 80px;
+          height: 80px;
+          background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 24px auto;
+          box-shadow: 0 8px 32px rgba(238, 90, 82, 0.3);
+        ">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+        </div>
+        
+        <!-- Title -->
+        <h2 style="
+          color: #1a1a1a;
+          margin: 0 0 16px 0;
+          font-size: 24px;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        ">
+          ไม่รองรับ Browser นี้
         </h2>
-        <p style="color: #374151; margin-bottom: 25px; line-height: 1.6; font-size: 16px;">
-          เพื่อประสบการณ์ที่ดีที่สุด กรุณาเปิดเว็บไซต์ใน Browser หลักของเครื่อง
+        
+        <!-- Message -->
+        <p style="
+          color: #666;
+          margin: 0 0 32px 0;
+          line-height: 1.6;
+          font-size: 16px;
+          font-weight: 400;
+        ">
+          โปรดเปิดบน Chrome, Safari หรือ Firefox
         </p>
-        <div style="margin-bottom: 25px;">
-          <button onclick="window.open('${window.location.href}', '_blank')" style="
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-right: 10px;
-          ">
-            เปิดใน Browser ใหม่
+        
+        <!-- Action Buttons -->
+        <div style="
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        ">
+          <button 
+            onclick="
+              const url = '${window.location.href}';
+              navigator.clipboard.writeText(url).then(() => {
+                alert('คัดลอกลิงก์เรียบร้อย!');
+              });
+            " 
+            style="
+              background: linear-gradient(135deg, #667eea, #764ba2);
+              color: white;
+              border: none;
+              padding: 16px 24px;
+              border-radius: 16px;
+              font-size: 16px;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(102, 126, 234, 0.4)'"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(102, 126, 234, 0.3)'"
+          >
+            📋 คัดลอกลิงก์
           </button>
-          <button onclick="this.closest('.modal').remove()" style="
-            background: #6b7280;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-          ">
+          
+          <button 
+            onclick="this.closest('.browser-modal').remove()" 
+            style="
+              background: #f8f9fa;
+              color: #6c757d;
+              border: 1px solid #e9ecef;
+              padding: 16px 24px;
+              border-radius: 16px;
+              font-size: 16px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.2s ease;
+            "
+            onmouseover="this.style.background='#e9ecef'"
+            onmouseout="this.style.background='#f8f9fa'"
+          >
             ปิด
           </button>
         </div>
-        <p style="color: #9ca3af; font-size: 14px;">
-          💡 หลังจากเปิดใน Browser แล้ว สามารถปิดหน้าต่างนี้ได้
+        
+        <!-- Help Text -->
+        <p style="
+          color: #999;
+          font-size: 14px;
+          margin: 24px 0 0 0;
+          line-height: 1.4;
+        ">
+          💡 คัดลอกลิงก์แล้วเปิดใน Browser ที่รองรับ
         </p>
       </div>
+      
+      <style>
+        @keyframes modalSlideIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      </style>
     `
     
-    modal.className = 'modal'
+    modal.className = 'browser-modal'
     document.body.appendChild(modal)
     
-    // Auto remove modal after 10 seconds
+    // Auto remove modal after 15 seconds
     setTimeout(() => {
       if (modal.parentNode) {
         modal.remove()
       }
-    }, 10000)
+    }, 15000)
   }
 
   // Show loading while checking registration status or redirecting
