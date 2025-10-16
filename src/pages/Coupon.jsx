@@ -10,10 +10,8 @@ function Coupon() {
   const [checkedInStores, setCheckedInStores] = useState([])
   const [availableStores, setAvailableStores] = useState([])
   const [showPopup, setShowPopup] = useState(false)
-  const [inputCode, setInputCode] = useState('')
   const [isRedeemed, setIsRedeemed] = useState(false)
   const [showSuccessToast, setShowSuccessToast] = useState(false)
-  const [showErrorToast, setShowErrorToast] = useState(false)
 
   // Check if user is registered
   useEffect(() => {
@@ -122,32 +120,24 @@ function Coupon() {
     }
   }
 
-  const handleCodeSubmit = () => {
-    if (inputCode === '123456') {
-      // Correct code
-      setIsRedeemed(true)
-      localStorage.setItem('couponRedeemed', 'true')
-      setShowPopup(false)
-      setInputCode('')
-      
-      // Show success toast
-      setShowSuccessToast(true)
-      
-      // Navigate to main page
-      setTimeout(() => {
-        // Clear the flag so user won't be redirected back
-        sessionStorage.removeItem('fromCoupon')
-        navigate('/main')
-      }, 2000)
-    } else {
-      // Wrong code
-      setShowErrorToast(true)
-    }
+  const handleStaffConfirm = () => {
+    setIsRedeemed(true)
+    localStorage.setItem('couponRedeemed', 'true')
+    setShowPopup(false)
+    
+    // Show success toast
+    setShowSuccessToast(true)
+    
+    // Navigate to main page
+    setTimeout(() => {
+      // Clear the flag so user won't be redirected back
+      sessionStorage.removeItem('fromCoupon')
+      navigate('/main')
+    }, 2000)
   }
 
   const handleClosePopup = () => {
     setShowPopup(false)
-    setInputCode('')
   }
 
   const handleBackToMain = () => {
@@ -463,7 +453,6 @@ function Coupon() {
               zIndex: 1000,
               padding: '20px'
             }}
-            onClick={handleClosePopup}
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -478,7 +467,6 @@ function Coupon() {
                 textAlign: 'center',
                 boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)'
               }}
-              onClick={(e) => e.stopPropagation()}
             >
               <h2 style={{
                 fontSize: '24px',
@@ -486,42 +474,29 @@ function Coupon() {
                 margin: '0 0 20px 0',
                 color: '#1f2937'
               }}>
-                ใส่รหัสคูปอง
+                ยืนยันการแลกรางวัล
               </h2>
               
+              <div style={{
+                backgroundColor: '#FFF7ED',
+                border: '1px solid #FDBA74',
+                color: '#9A3412',
+                borderRadius: '12px',
+                padding: '12px 14px',
+                marginBottom: '16px',
+                fontSize: '14px',
+                fontWeight: 600
+              }}>
+                กรุณาอย่าปิดหน้านี้ จนกว่าพนักงานจะอ่าน
+              </div>
+
               <p style={{
                 fontSize: '16px',
-                color: '#6b7280',
-                margin: '0 0 25px 0'
+                color: '#374151',
+                margin: '0 0 16px 0'
               }}>
-                กรุณาใส่รหัสที่ได้รับจากพนักงาน
+                โปรดส่งเครื่องให้พนักงานตรวจสอบ และให้พนักงานกดปุ่มยืนยัน
               </p>
-
-              <input
-                type="text"
-                value={inputCode}
-                onChange={(e) => setInputCode(e.target.value)}
-                placeholder="ใส่รหัส 6 หลัก"
-                maxLength="6"
-                style={{
-                  width: '100%',
-                  padding: '15px',
-                  fontSize: '18px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '12px',
-                  textAlign: 'center',
-                  letterSpacing: '2px',
-                  marginBottom: '25px',
-                  outline: 'none',
-                  transition: 'border-color 0.3s ease'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#3b82f6'
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e5e7eb'
-                }}
-              />
 
               <div style={{
                 display: 'flex',
@@ -552,31 +527,26 @@ function Coupon() {
                 </button>
 
                 <button
-                  onClick={handleCodeSubmit}
-                  disabled={inputCode.length !== 6}
+                  onClick={handleStaffConfirm}
                   style={{
                     padding: '12px 24px',
-                    backgroundColor: inputCode.length === 6 ? '#3b82f6' : '#e5e7eb',
-                    color: inputCode.length === 6 ? 'white' : '#9ca3af',
+                    backgroundColor: '#16a34a',
+                    color: 'white',
                     border: 'none',
                     borderRadius: '12px',
                     fontSize: '16px',
                     fontWeight: '600',
-                    cursor: inputCode.length === 6 ? 'pointer' : 'not-allowed',
+                    cursor: 'pointer',
                     transition: 'all 0.3s ease'
                   }}
                   onMouseEnter={(e) => {
-                    if (inputCode.length === 6) {
-                      e.target.style.backgroundColor = '#2563eb'
-                    }
+                    e.target.style.backgroundColor = '#15803d'
                   }}
                   onMouseLeave={(e) => {
-                    if (inputCode.length === 6) {
-                      e.target.style.backgroundColor = '#3b82f6'
-                    }
+                    e.target.style.backgroundColor = '#16a34a'
                   }}
                 >
-                  ยืนยัน
+                  พนักงานยืนยัน
                 </button>
               </div>
             </motion.div>
@@ -659,7 +629,7 @@ function Coupon() {
                 color: '#6b7280',
                 margin: '0 0 15px 0'
               }}>
-                คุณการใช้ coupon สำเร็จแล้ว
+                แลกรางวัลสำเร็จแล้ว
               </p>
 
               <motion.div
@@ -677,111 +647,7 @@ function Coupon() {
           </motion.div>
         )}
 
-        {/* Error Toast */}
-        {showErrorToast && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -50, scale: 0.8 }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: 3000
-            }}
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              style={{
-                backgroundColor: 'white',
-                borderRadius: '20px',
-                padding: '25px',
-                maxWidth: '280px',
-                width: '80%',
-                textAlign: 'center',
-                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
-                border: '3px solid #EF4444'
-              }}
-            >
-              <div style={{
-                width: '50px',
-                height: '50px',
-                backgroundColor: '#EF4444',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 15px auto'
-              }}
-            >
-              <motion.svg
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </motion.svg>
-              </div>
-              
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: 'bold',
-                margin: '0 0 8px 0',
-                color: '#EF4444'
-              }}>
-                รหัสไม่ถูกต้อง
-              </h2>
-              
-              <p style={{
-                fontSize: '14px',
-                color: '#6b7280',
-                margin: '0 0 15px 0'
-              }}>
-                กรุณาติดต่อพนักงาน
-              </p>
-
-              <button
-                onClick={() => setShowErrorToast(false)}
-                style={{
-                  padding: '12px 24px',
-                  backgroundColor: '#EF4444',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#DC2626'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#EF4444'
-                }}
-              >
-                ตกลง
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
+        {/* Error Toast removed: No code required flow */}
 
       </div>
     </div>
