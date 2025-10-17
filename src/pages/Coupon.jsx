@@ -17,7 +17,7 @@ function Coupon() {
   useEffect(() => {
     const userData = getUserData()
     if (!userData) {
-      navigate('/')
+      navigate('/go-to-start')
       return
     }
   }, [navigate])

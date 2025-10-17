@@ -30,9 +30,13 @@ function Checkin() {
   useEffect(() => {
     // Check if user is registered first
     const userData = getUserData()
-    if (!userData) {
-      // User not registered, redirect to start page
-      navigate('/')
+    const deviceId = localStorage.getItem('deviceId')
+    const isUserRegistered = !!(userData && deviceId)
+    
+    if (!isUserRegistered) {
+      // User not registered, redirect to go-to-start page
+      console.log('Checkin: User not registered, redirecting to go-to-start')
+      navigate('/go-to-start')
       return
     }
 

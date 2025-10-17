@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { QrCode, Home, MapPin, X, Ticket } from 'lucide-react'
-import { getUserData, clearAllData } from '../utils/storage'
+import { getUserData, clearAllData, saveUserData, generateDeviceId, saveDeviceId } from '../utils/storage'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { motion } from 'framer-motion'
 import Particles from '@tsparticles/react'
@@ -22,16 +22,16 @@ function Main() {
   const [isProcessing, setIsProcessing] = useState(false)
   const videoRef = useRef(null)
 
-  // Check if user is registered
+  // Check if user is registered - redirect new users to go-to-start
   useEffect(() => {
     console.log('Main: Checking user data...')
     console.log('Main: userData =', userData)
     if (!userData) {
-      console.log('Main: User not registered, redirecting to /')
-      navigate('/')
+      console.log('Main: User not registered, redirecting to /go-to-start')
+      navigate('/go-to-start')
       return
     }
-    console.log('Main: User registered, showing main page')
+    console.log('Main: User data check complete')
   }, [userData, navigate])
 
   // Store data with coordinates and map links
@@ -199,7 +199,96 @@ function Main() {
     // Clean and normalize QR data
     const cleanData = qrData.trim().toLowerCase()
     
-    // More flexible QR code matching - NO BLOCKING
+    // Check if user is registered (has device ID)
+    const userData = getUserData()
+    const deviceId = localStorage.getItem('deviceId')
+    const isUserRegistered = !!(userData && deviceId)
+    
+    console.log('QR Code detected:', qrData)
+    console.log('Clean data:', cleanData)
+    console.log('User registered:', isUserRegistered)
+    
+    // Check if this is the start QR code (/) - ONLY exact match
+    const isStartQR = cleanData === '/' || 
+                     cleanData === '' ||
+                     qrData === window.location.origin + '/' ||
+                     qrData === window.location.origin
+    
+    console.log('Is start QR:', isStartQR)
+    
+    // If user is not registered, handle based on QR code type
+    if (!isUserRegistered) {
+      if (isStartQR) {
+        // User not registered + Start QR = Create account and start playing
+        console.log('New user scanning start QR - creating account')
+        
+        // Stop scanner immediately
+        if (qrScanner) {
+          qrScanner.stop()
+          qrScanner.destroy()
+          setQrScanner(null)
+        }
+        setShowCamera(false)
+        
+        // Create device ID and user data
+        const newDeviceId = generateDeviceId()
+        const newUserData = {
+          id: newDeviceId,
+          name: 'Player',
+          email: '',
+          registeredAt: new Date().toISOString()
+        }
+        
+        // Save user data and device ID
+        saveUserData(newUserData)
+        saveDeviceId(newDeviceId)
+        
+        console.log('New user registered with device ID:', newDeviceId)
+        
+        // Sound Effect
+        playCheckinSound()
+        
+        // Haptic Feedback
+        triggerHapticFeedback()
+        
+        // Navigate to main page (start playing)
+        setIsProcessing(false)
+        // Don't navigate - we're already on main page
+        return
+      } else {
+        // User not registered + Non-start QR = Redirect to go-to-start
+        console.log('New user scanning non-start QR - redirecting to go-to-start')
+        
+        // Stop scanner immediately
+        if (qrScanner) {
+          qrScanner.stop()
+          qrScanner.destroy()
+          setQrScanner(null)
+        }
+        setShowCamera(false)
+        
+        setIsProcessing(false)
+        navigate('/go-to-start')
+        return
+      }
+    }
+    
+    // User is registered, handle normally
+    if (isStartQR) {
+      // Registered user scanning start QR = Just stay on main
+      console.log('Registered user scanning start QR - staying on main')
+      if (qrScanner) {
+        qrScanner.stop()
+        qrScanner.destroy()
+        setQrScanner(null)
+      }
+      setShowCamera(false)
+      setIsProcessing(false)
+      // Don't navigate - we're already on main page
+      return
+    }
+    
+    // User is registered, proceed with normal QR code matching
     let store = null
     
     // Try ALL possible matching methods without restrictions
@@ -245,35 +334,7 @@ function Main() {
       })
     }
     
-    // METHOD 4: Try store ID match (for testing) - DISABLED for Hovercode
-    // if (!store) {
-    //   const idMatch = cleanData.match(/\d+/)
-    //   if (idMatch) {
-    //     const id = parseInt(idMatch[0])
-    //     store = stores.find(s => s.id === id)
-    //     if (store) console.log('✅ Store ID match found:', store.name)
-    //   }
-    // }
-    
-    // METHOD 5: Try any number in QR code as store ID - DISABLED for Hovercode
-    // if (!store) {
-    //   const numbers = cleanData.match(/\d+/g)
-    //   if (numbers) {
-    //     console.log('🔢 Numbers found in QR data:', numbers)
-    //     for (const num of numbers) {
-    //       const id = parseInt(num)
-    //       if (id >= 1 && id <= 9) {
-    //         store = stores.find(s => s.id === id)
-    //         if (store) {
-    //           console.log('✅ Number-based match found:', store.name, 'ID:', id)
-    //           break
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    
-    // METHOD 6: Try URL-based matching (for any URL) - but skip /checkin/ paths
+    // METHOD 4: Try URL-based matching (for any URL) - but skip /checkin/ paths
     if (!store) {
       try {
         const url = new URL(qrData)
@@ -308,7 +369,7 @@ function Main() {
       }
     }
     
-    // METHOD 7: Hovercode QR Code Flow - Let Hovercode redirect naturally
+    // METHOD 5: Hovercode QR Code Flow - Let Hovercode redirect naturally
     if (!store) {
       try {
         const url = new URL(qrData)

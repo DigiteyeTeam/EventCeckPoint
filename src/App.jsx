@@ -9,6 +9,7 @@ import Maps from './pages/Maps'
 import Checkin from './pages/Checkin'
 import Coupon from './pages/Coupon'
 import StoreDetail from './pages/StoreDetail'
+import GoToStart from './pages/GoToStart'
 import { isUserRegistered } from './utils/storage'
 
 function App() {
@@ -215,6 +216,7 @@ function App() {
             <Route path="/checkin/:storeSlug" element={<Checkin />} />
             <Route path="/coupon" element={<Coupon />} />
             <Route path="/store/:storeId" element={<StoreDetail />} />
+            <Route path="/go-to-start" element={<GoToStart />} />
       </Routes>
       
       {/* Add CSS for loading spinner */}
